@@ -1,0 +1,1 @@
+declare module '@assureddt/pact-vue-grid';
