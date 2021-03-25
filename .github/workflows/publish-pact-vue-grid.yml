@@ -4,7 +4,7 @@ on: push
 
 defaults:
   run:
-    working-directory: /src/pact-vue-grid
+    working-directory: src/pact-vue-grid
 
 jobs:   
   publish-gpr:
