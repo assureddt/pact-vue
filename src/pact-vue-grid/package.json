@@ -1,6 +1,6 @@
 {
   "name": "@assureddt/pact-vue-grid",
-  "version": "0.0.2-beta",
+  "version": "0.0.3-beta",
   "description": "Vue 3 grid system",
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "webpack": "4.44.2"
   },
   "main": "dist/pact-vue-grid.common.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build-debug": "vue-cli-service build --dest dist --mode development --target lib src/index.ts && tsc --emitDeclarationOnly",
     "build": "vue-cli-service build --dest dist --mode production --target lib src/index.ts && tsc --emitDeclarationOnly",
