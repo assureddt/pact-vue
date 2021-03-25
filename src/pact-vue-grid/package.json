@@ -1,10 +1,13 @@
 {
-  "name": "pact-vue-grid",
+  "name": "@assureddt/pact-vue-grid",
   "version": "0.0.1-beta",
   "description": "Vue 3 grid system",
   "repository": {
     "type": "git",
     "url": "https://github.com/assureddt/pact-vue/src/pact-vue-grid"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
     "@fortawesome/vue-fontawesome": "3.0.0-3",
