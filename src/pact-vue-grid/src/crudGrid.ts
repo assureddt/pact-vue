@@ -2,8 +2,6 @@ import { createApp, ComponentPublicInstance  } from "vue";
 import Page from "./components/Page.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { GridOptions, GridColumn, EditOptions, EditField, GridColumnOrder} from "./models";
-import "bootstrap";
-import "../node_modules/bootstrap/dist/css/bootstrap.css"
 
 export class CRUDGrid {
     constructor(selector: string, gridOptions: GridOptions, gridColumns: (GridColumn | GridColumnOrder)[], editOptions: EditOptions, editFields: EditField[]) {
