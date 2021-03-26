@@ -3,7 +3,7 @@
 		<div class="col">
 			<div class="row" v-if="pageTitle != undefined && mode == 'grid'">
 				<div class="col">
-					<h5></h5>
+					<h5>{{ pageTitle }}</h5>
 				</div>
 			</div>
 			<div class="row">
