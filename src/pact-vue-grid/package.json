@@ -1,6 +1,6 @@
 {
   "name": "@assureddt/pact-vue-grid",
-  "version": "0.0.5-beta",
+  "version": "0.0.6-beta",
   "description": "Vue 3 grid system",
   "repository": {
     "type": "git",
@@ -10,8 +10,10 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "@fortawesome/vue-fontawesome": "3.0.0-3",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/vue-fontawesome": "3.0.0-3",
+    "@popperjs/core": "2.9.1",
+    "bootstrap": "5.0.0-beta2",
     "core-js": "3.9.1",
     "vue": "3.0.5"
   },
