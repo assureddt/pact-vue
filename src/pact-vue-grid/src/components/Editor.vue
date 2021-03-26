@@ -81,6 +81,7 @@
                 const form = document.getElementById('add-edit-form') as HTMLFormElement;
                 if (!form.checkValidity()) {
 					showValidity.value = true;
+					form.classList.add('was-validated');
                     return;
                 }
 
