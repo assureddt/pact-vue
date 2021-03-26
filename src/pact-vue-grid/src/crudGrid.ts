@@ -4,25 +4,29 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { GridOptions, GridColumn, EditOptions, EditField, GridColumnOrder} from "./models";
 
 export class CRUDGrid {
-    constructor(selector: string, gridOptions: GridOptions, gridColumns: (GridColumn | GridColumnOrder)[], editOptions: EditOptions, editFields: EditField[]) {
-        this.gridOptions = gridOptions;
-        this.gridColumns = gridColumns;
-        this.editOptions = editOptions;
-        this.editFields = editFields;
+    constructor(options: CRUDGridOptions) {
+        this.options = options;
 
         this.vm = createApp(Page, {
-            gridOptions: this.gridOptions,
-            gridColumns: this.gridColumns,
-            editOptions: this.editOptions,
-            editFields: this.editFields
+            gridOptions: options.gridOptions,
+            gridColumns: options.gridColumns,
+            editOptions: options.editOptions,
+            editFields: options.editFields,
+            pageTitle: options.pageTitle
         })
         .component('font-awesome-icon', FontAwesomeIcon)
-        .mount(selector);
+        .mount(options.selector);
     }
     
-    gridOptions: GridOptions
-    gridColumns: GridColumn[]
-    editOptions: EditOptions
-    editFields: EditField[]
+    options: CRUDGridOptions
     vm: ComponentPublicInstance
+}
+
+export interface CRUDGridOptions {
+    selector: string,
+    gridOptions: GridOptions,
+    gridColumns: (GridColumn | GridColumnOrder)[],
+    editOptions: EditOptions,
+    editFields: EditField[],
+    pageTitle?: string
 }

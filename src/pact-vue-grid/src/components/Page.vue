@@ -1,11 +1,25 @@
 <template>
-	<page-grid v-if="mode == 'grid'" :options="gridOptions" :columns="gridColumns" @change-mode="changeMode"></page-grid>
-	<page-edit v-if="mode == 'add' || mode == 'edit'" :options="editOptions" :fields="editFields" :mode="mode" @change-mode="changeMode" :editing="editing" :parent="parent"></page-edit>
+	<div class="row">
+		<div class="col">
+			<div class="row" v-if="pageTitle != undefined && mode == 'grid'">
+				<div class="col">
+					<h5></h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<page-grid v-if="mode == 'grid'" :options="gridOptions" :columns="gridColumns" @change-mode="changeMode"></page-grid>
+					<page-edit v-if="mode == 'add' || mode == 'edit'" :options="editOptions" :fields="editFields" :mode="mode" @change-mode="changeMode" :editing="editing" :parent="parent"></page-edit>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </template>
 
 <script lang="ts">
 	import { defineComponent, PropType, ref} from "vue";
-	import { GridOptions, GridColumn, EditField, EditOptions, GridCascadeFilter} from "../models";
+	import { GridOptions, GridColumn, EditField, EditOptions} from "../models";
     import Gird from "./Grid.vue";
 	import Editor from "./Editor.vue";
 
@@ -26,6 +40,10 @@
 			editFields: {
 				type: Array as PropType<EditField[]>,
 				required: true,
+			},
+			pageTitle: {
+				type: String,
+				required: false,
 			}
 		},
         components: {
