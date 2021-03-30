@@ -10,7 +10,12 @@
 			<div class="row" v-for="field in fields" :key="field.name">
 				<div class="col-12 mb-3">
 					<label :for="field.name" class="form-label">{{ field.display }}</label>
-					<input :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
+					<input v-if="field.type != 'select'" :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
+					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-control" :id="field.name" v-model="record[field.name]" :required="field.required">
+						<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
+							{{selectData.display}}
+						</option>
+					</select>
 				</div>
 			</div>
 			<div class="row" v-if="serverMessage.length > 0">
@@ -41,8 +46,8 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, PropType, ref } from "vue";
-	import { EditField, EditOptions } from "../models";
+	import { defineComponent, PropType, ref, reactive } from "vue";
+	import { EditField, EditOptions, SelectOption } from "../models";
 
 	export default defineComponent({
 		props: {
@@ -72,6 +77,17 @@
 			const record = ref({});
 			const showValidity = ref(false);
 			const serverMessage = ref("");
+			const selectDataMap = reactive(new Map<string, SelectOption[]>());
+
+			props.fields.forEach(field => {
+				if(field.type == "select" && field.optionsUrl != undefined) {
+					fetch(field.optionsUrl)
+					.then((response) => response.json())
+					.then((data) => {
+						selectDataMap.set(field.name, data);
+					});
+				}
+			});
 
 			const gridMode = () => {
 				emit("changeMode", "grid");
@@ -124,7 +140,8 @@
 				submit,
 				showValidity,
 				serverMessage,
-				gridMode
+				gridMode,
+				selectDataMap
 			};
 		},
 	});

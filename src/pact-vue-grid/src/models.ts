@@ -43,6 +43,7 @@ export interface EditField {
     required: boolean;
     type: string;
     pattern?: string;
+    optionsUrl?: string;
 }
 
 export interface GridColumnOrder extends GridColumn {
@@ -62,4 +63,8 @@ export interface GridCascadeFilter {
 export interface FilterData {
     id: number,
     display: string
+}
+
+export interface SelectOption extends FilterData {
+
 }
