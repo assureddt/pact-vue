@@ -1,7 +1,7 @@
 <template>
 	<div class="row row-cols-lg-auto g-3 align-items-center mb-1">
 		<div class="col-12" v-if="options.allowAdd">
-			<button class="btn btn-primary btn-sm" v-on:click="addMode">
+			<button class="btn btn-primary btn-sm" v-on:click="addMode" aria-label="Create new">
 				<font-awesome-icon icon="plus" class="text-white" fixed-width></font-awesome-icon>
 			</button>
 		</div>
@@ -9,34 +9,37 @@
 		<div class="col-12">
 			<ul class="pagination pagination-sm handy mb-0">
 				<li class="page-item" v-if="page > 0">
-					<a class="page-link" v-on:click="adjustPage(-1)">
+					<button class="page-link" v-on:click="adjustPage(-1)">
 						<font-awesome-icon icon="arrow-left" fixed-width></font-awesome-icon>
-					</a>
+					</button>
 				</li>
 				<li class="page-item" v-if="page - 2 >= 0">
-					<a class="page-link" v-on:click="changePage(page - 2)">{{ page - 1 }}</a>
+					<button class="page-link" v-on:click="changePage(page - 2)">{{ page - 1 }}</button>
 				</li>
 				<li class="page-item" v-if="page - 1 >= 0">
-					<a class="page-link" v-on:click="changePage(page - 1)">{{ page }}</a>
+					<button class="page-link" v-on:click="changePage(page - 1)">{{ page }}</button>
 				</li>
 				<li class="page-item active">
-					<a class="page-link">{{ page + 1 }}</a>
+					<button class="page-link">{{ page + 1 }}</a>
 				</li>
 				<li class="page-item" v-if="page + 1 < pages">
-					<a class="page-link" v-on:click="changePage(page + 1)">{{ page + 2 }}</a>
+					<button class="page-link" v-on:click="changePage(page + 1)">{{ page + 2 }}</button>
 				</li>
 				<li class="page-item" v-if="page + 2 < pages">
-					<a class="page-link" v-on:click="changePage(page + 2)">{{ page + 3 }}</a>
+					<button class="page-link" v-on:click="changePage(page + 2)">{{ page + 3 }}</button>
 				</li>
 				<li class="page-item" v-if="page < pages - 1">
-					<a class="page-link" v-on:click="adjustPage(1)">
+					<button class="page-link" v-on:click="adjustPage(1)">
 						<font-awesome-icon icon="arrow-right" fixed-width></font-awesome-icon>
-					</a>
+					</button>
 				</li>
 			</ul>
 		</div>
 		<div class="col-12 ms-auto">
-			<input type="text" class="form-control form-control-sm search-width" placeholder="Search..." v-model="filter" />
+			<div class="input-group input-group-sm">
+				<label class="input-group-text">Search</label>
+				<input type="text" class="form-control form-control-sm search-width" placeholder="Search..." v-model="filter" />
+			</div>
 		</div>
 	</div>
 	<div class="row" v-if="deleting != undefined">
@@ -61,10 +64,10 @@
 			<table class="table table-sm table-bordered">
 				<thead>
 					<tr>
-						<th scope="col" class="handy" v-for="column in columns" :key="column.name" v-on:click="changeOrder(column.name)" :class="columnHeaderClass(column)">
+						<th scope="col" class="handy" v-for="column in columns" :key="column.name" v-on:click="changeOrder(column.name)" v-on:keydown="changeOrder(column.name)" :class="columnHeaderClass(column)" tabindex=0>
 							{{ column.display }}
 						</th>
-						<th v-if="options.allowEdit || options.allowDelete" :style="{ width: options.buttonsWidth + 'px' }"></th>
+						<th v-if="options.allowEdit || options.allowDelete" :style="{ width: options.buttonsWidth + 'px' }">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -86,10 +89,10 @@
 						</td>
 						<th v-if="options.allowEdit || options.allowDelete">
 							<div class="btn-group" role="group" aria-label="edit and remove buttons">
-								<button type="button" class="btn btn-primary btn-sm" v-if="options.allowEdit" v-on:click="editRecord(record)">
+								<button type="button" class="btn btn-primary btn-sm" v-if="options.allowEdit" v-on:click="editRecord(record)" aria-label="Edit">
 									<font-awesome-icon icon="edit" class="text-white" fixed-width></font-awesome-icon>
 								</button>
-								<button type="button" class="btn btn-danger btn-sm" v-if="options.allowDelete" v-on:click="deleteRecord(record)">
+								<button type="button" class="btn btn-danger btn-sm" v-if="options.allowDelete" v-on:click="deleteRecord(record)" aria-label="Delete">
 									<font-awesome-icon icon="times" class="text-white" fixed-width></font-awesome-icon>
 								</button>
 							</div>
