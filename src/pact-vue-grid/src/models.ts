@@ -60,11 +60,7 @@ export interface GridCascadeFilter {
     parent?: string;
 }
 
-export interface FilterData {
+export interface SelectOption  {
     id: number,
     display: string
-}
-
-export interface SelectOption extends FilterData {
-
 }

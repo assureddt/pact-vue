@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, watch, reactive } from "vue";
-	import { GridCascadeFilter, FilterData } from "../models";
+	import { GridCascadeFilter, SelectOption } from "../models";
 
 	export default defineComponent({
 		props: {
@@ -26,7 +26,7 @@
 		setup(props, { emit }) {
 			if (props.filters == undefined) return {};
 
-			const filterDataMap = reactive(new Map<string, FilterData[]>());
+			const filterDataMap = reactive(new Map<string, SelectOption[]>());
 			const fitlerValues = reactive<FilterValues>({});
 			const lastValueSent = ref<number | undefined>(undefined);
 
@@ -37,7 +37,7 @@
 
 				fetch(url)
 					.then((response) => response.json())
-					.then((data: FilterData[]) => {
+					.then((data: SelectOption[]) => {
 						filterDataMap.set(filter.name, data);
 						fitlerValues[filter.name] = getCachedSeletedItem(filter, data);
 						loadNextFilter(filter);
@@ -75,7 +75,7 @@
 				if (!filter.isParentId) loadNextFilter(filter);
 			};
 
-			const getCachedSeletedItem = (filter: GridCascadeFilter, data: FilterData[]) : number => {
+			const getCachedSeletedItem = (filter: GridCascadeFilter, data: SelectOption[]) : number => {
 				let rawData = sessionStorage.getItem(cacheKey(filter.name));
 				if(rawData != null)
 				{
