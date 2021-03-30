@@ -20,7 +20,7 @@
 					<button class="page-link" v-on:click="changePage(page - 1)">{{ page }}</button>
 				</li>
 				<li class="page-item active">
-					<button class="page-link">{{ page + 1 }}</a>
+					<button class="page-link">{{ page + 1 }}</button>
 				</li>
 				<li class="page-item" v-if="page + 1 < pages">
 					<button class="page-link" v-on:click="changePage(page + 1)">{{ page + 2 }}</button>
