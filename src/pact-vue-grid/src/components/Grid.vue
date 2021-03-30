@@ -37,8 +37,8 @@
 		</div>
 		<div class="col-12 ms-auto">
 			<div class="input-group input-group-sm">
-				<label class="input-group-text">Search</label>
-				<input type="text" class="form-control form-control-sm search-width" placeholder="Search..." v-model="filter" />
+				<label class="input-group-text" for="search-box">Search</label>
+				<input type="text" class="form-control form-control-sm search-width" placeholder="Search..." v-model="filter" id="search-box" />
 			</div>
 		</div>
 	</div>
