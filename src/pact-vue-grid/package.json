@@ -1,6 +1,6 @@
 {
   "name": "@assureddt/pact-vue-grid",
-  "version": "0.0.12-beta",
+  "version": "0.0.13-beta",
   "description": "Vue 3 grid system",
   "repository": {
     "type": "git",

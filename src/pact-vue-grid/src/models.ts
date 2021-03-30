@@ -43,7 +43,17 @@ export interface EditField {
     required: boolean;
     type: string;
     pattern?: string;
-    optionsUrl?: string;
+}
+
+export interface EditFieldSelect extends EditField {
+    type: "select"
+    optionsUrl: string;
+}
+
+export interface EditFieldNumber extends EditField {
+    type: "number"
+    min?: number;
+    max?: number;
 }
 
 export interface GridColumnOrder extends GridColumn {

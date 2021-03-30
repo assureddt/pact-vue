@@ -1,7 +1,7 @@
 import { createApp, ComponentPublicInstance  } from "vue";
 import Page from "./components/Page.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { GridOptions, GridColumn, EditOptions, EditField, GridColumnOrder} from "./models";
+import { GridOptions, GridColumn, EditOptions, EditField, EditFieldSelect, EditFieldNumber, GridColumnOrder} from "./models";
 
 export class CRUDGrid {
     constructor(options: CRUDGridOptions) {
@@ -27,6 +27,6 @@ export interface CRUDGridOptions {
     gridOptions: GridOptions,
     gridColumns: (GridColumn | GridColumnOrder)[],
     editOptions: EditOptions,
-    editFields: EditField[],
+    editFields: (EditField | EditFieldSelect | EditFieldNumber)[],
     pageTitle?: string
 }

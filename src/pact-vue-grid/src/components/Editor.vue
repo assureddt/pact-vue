@@ -10,12 +10,13 @@
 			<div class="row" v-for="field in fields" :key="field.name">
 				<div class="col-12 mb-3">
 					<label :for="field.name" class="form-label">{{ field.display }}</label>
-					<input v-if="field.type != 'select'" :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
 					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-control" :id="field.name" v-model="record[field.name]" :required="field.required">
 						<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
 							{{selectData.display}}
 						</option>
 					</select>
+					<input v-else-if="field.type == 'number'" :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern" :min="field.min" :max="field.max"/>
+					<input v-else :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
 				</div>
 			</div>
 			<div class="row" v-if="serverMessage.length > 0">
@@ -47,7 +48,7 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, reactive } from "vue";
-	import { EditField, EditOptions, SelectOption } from "../models";
+	import { EditField, EditFieldSelect, EditFieldNumber, EditOptions, SelectOption } from "../models";
 
 	export default defineComponent({
 		props: {
@@ -56,7 +57,7 @@
 				required: true,
 			},
 			fields: {
-				type: Array as PropType<EditField[]>,
+				type: Array as PropType<(EditField | EditFieldSelect | EditFieldNumber)[]>,
 				required: true,
 			},
 			mode: {
@@ -80,8 +81,10 @@
 			const selectDataMap = reactive(new Map<string, SelectOption[]>());
 
 			props.fields.forEach(field => {
-				if(field.type == "select" && field.optionsUrl != undefined) {
-					fetch(field.optionsUrl)
+				if(field.type == "select") {
+					const selectField = field as EditFieldSelect;
+
+					fetch(selectField.optionsUrl)
 					.then((response) => response.json())
 					.then((data) => {
 						selectDataMap.set(field.name, data);

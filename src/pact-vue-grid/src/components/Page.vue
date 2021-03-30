@@ -19,7 +19,7 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref} from "vue";
-	import { GridOptions, GridColumn, EditField, EditOptions} from "../models";
+	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditOptions} from "../models";
     import Gird from "./Grid.vue";
 	import Editor from "./Editor.vue";
 
@@ -38,7 +38,7 @@
 				required: true,
 			},
 			editFields: {
-				type: Array as PropType<EditField[]>,
+				type: Array as PropType<(EditField | EditFieldSelect | EditFieldNumber)[]>,
 				required: true,
 			},
 			pageTitle: {
