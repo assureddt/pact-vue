@@ -10,7 +10,7 @@
 			<div class="row">
 				<div v-for="field in fields" :key="field.name" class="mb-3" :class="columnClass">
 					<label :for="field.name" class="form-label">{{ field.display }}</label>
-					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-control" :id="field.name" v-model="record[field.name]" :required="field.required" :multiple="field.multiple">
+					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required" :multiple="field.multiple">
 						<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
 							{{selectData.display}}
 						</option>
@@ -75,7 +75,7 @@
 		},
 		emits: ["changeMode"],
 		setup(props, { emit }) {
-			const record = ref({});
+			const record = ref<Values>({});
 			const showValidity = ref(false);
 			const serverMessage = ref("");
 			const selectDataMap = reactive(new Map<string, SelectOption[]>());
@@ -93,6 +93,9 @@
 					.then((data) => {
 						selectDataMap.set(field.name, data);
 					});
+
+					if(props.editing == undefined)
+						record.value[field.name] = [];
 				}
 			});
 
@@ -153,6 +156,10 @@
 			};
 		},
 	});
+
+	interface Values {
+		[key: string]: number | string | [];
+	}
 </script>
 
 <style scoped>
