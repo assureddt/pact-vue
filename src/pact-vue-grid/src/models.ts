@@ -34,6 +34,7 @@ export interface EditOptions {
     grabData: string;
     addTitle: string;
     editTitle: string;
+    columnClass?: string;
 }
 
 export interface EditField {
@@ -48,6 +49,7 @@ export interface EditField {
 export interface EditFieldSelect extends EditField {
     type: "select"
     optionsUrl: string;
+    multiple?: boolean;
 }
 
 export interface EditFieldNumber extends EditField {

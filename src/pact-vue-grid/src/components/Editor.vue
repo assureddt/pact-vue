@@ -7,10 +7,10 @@
 					<h5 v-if="mode == 'add'">{{options.addTitle}}</h5>
 				</div>
 			</div>
-			<div class="row" v-for="field in fields" :key="field.name">
-				<div class="col-12 mb-3">
+			<div class="row">
+				<div v-for="field in fields" :key="field.name" class="mb-3" :class="columnClass">
 					<label :for="field.name" class="form-label">{{ field.display }}</label>
-					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-control" :id="field.name" v-model="record[field.name]" :required="field.required">
+					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-control" :id="field.name" v-model="record[field.name]" :required="field.required" :multiple="field.multiple">
 						<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
 							{{selectData.display}}
 						</option>
@@ -79,6 +79,10 @@
 			const showValidity = ref(false);
 			const serverMessage = ref("");
 			const selectDataMap = reactive(new Map<string, SelectOption[]>());
+			const columnClass = ref("col-12");
+
+			if(props.options.columnClass != undefined)
+				columnClass.value = props.options.columnClass.valueOf();
 
 			props.fields.forEach(field => {
 				if(field.type == "select") {
@@ -137,14 +141,15 @@
 				});
 				return response.json();
 			}
-
+			
 			return {
 				record,
 				submit,
 				showValidity,
 				serverMessage,
 				gridMode,
-				selectDataMap
+				selectDataMap,
+				columnClass
 			};
 		},
 	});
