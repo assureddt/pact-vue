@@ -1,8 +1,8 @@
 <template v-if="filters != undefined">
 	<div class="col-12" v-for="filter in filters" :key="filter.name">
 		<div class="input-group input-group-sm">
-			<label class="input-group-text">{{ filter.label }}</label>
-			<select class="form-select select-width" v-model="fitlerValues[filter.name]" @change="selectChanged(filter)">
+			<label class="input-group-text" :for="getFilterId(filter)">{{ filter.label }}</label>
+			<select class="form-select select-width" v-model="fitlerValues[filter.name]" @change="selectChanged(filter)" :id="getFilterId(filter)">
 				<option v-for="filterData in filterDataMap.get(filter.name)" :key="filterData.id" :value="filterData.id">{{
 					filterData.display
 				}}</option>
@@ -91,11 +91,16 @@
 				return "crud-" + key;
 			}
 
+			const getFilterId = (filter: GridCascadeFilter) : string => {
+				return "filter-" + filter.name;
+			}
+
 			return {
 				filterDataMap,
 				getFilterData,
 				fitlerValues,
 				selectChanged,
+				getFilterId
 			};
 		},
 	});

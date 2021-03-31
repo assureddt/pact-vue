@@ -9,6 +9,7 @@ export interface GridOptions {
     buttonsWidth: number;
     deleteColumn: string;
     filters?: GridCascadeFilter[];
+    customActions?: GridCustomAction[];
 }
 
 export interface GridOptionsOrder {
@@ -75,4 +76,12 @@ export interface GridCascadeFilter {
 export interface SelectOption  {
     id: number,
     display: string
+}
+
+export interface GridCustomAction {
+    fontAwesomeIcon: string,
+    action(row: GridRow): void
+    label: string
+    buttonClass: string,
+    name: string
 }

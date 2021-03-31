@@ -6,7 +6,7 @@
 			</button>
 		</div>
 		<cascade-filters :filters="options.filters" @changed-filter="cascadeFilterChanged"></cascade-filters>
-		<div class="col-12">
+		<div class="col-12" v-if="pages > 1">
 			<ul class="pagination pagination-sm handy mb-0">
 				<li class="page-item" v-if="page > 0">
 					<button class="page-link" v-on:click="adjustPage(-1)">
@@ -67,7 +67,7 @@
 						<th scope="col" class="handy" v-for="column in columns" :key="column.name" v-on:click="changeOrder(column.name)" v-on:keydown="changeOrder(column.name)" :class="columnHeaderClass(column)" tabindex=0>
 							{{ column.display }}
 						</th>
-						<th v-if="options.allowEdit || options.allowDelete" :style="{ width: options.buttonsWidth + 'px' }">Actions</th>
+						<th v-if="hasActions" :style="{ width: options.buttonsWidth + 'px' }">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -78,17 +78,23 @@
 							</template>
 							<template v-else-if="column.type == 'order'">
 								<div class="btn-group" role="group" aria-label="order buttons">
-									<button type="button" class="btn btn-success btn-sm" v-on:click="up(record, column)" v-if="record[column.name] != column.min">
+									<button type="button" class="btn btn-success btn-sm" v-on:click="up(record, column)" v-if="record[column.name] != column.min" aria-label="Move up">
 										<font-awesome-icon icon="arrow-up" class="text-white" fixed-width></font-awesome-icon>
 									</button>
-									<button type="button" class="btn btn-success btn-sm" v-on:click="down(record, column)" v-if="record[column.name] != total - 1">
+									<button type="button" class="btn btn-success btn-sm" v-on:click="down(record, column)" v-if="record[column.name] != total - 1" aria-label="Move down">
 										<font-awesome-icon icon="arrow-down" class="text-white" fixed-width></font-awesome-icon>
 									</button>
 								</div>
 							</template>
 						</td>
-						<th v-if="options.allowEdit || options.allowDelete">
-							<div class="btn-group" role="group" aria-label="edit and remove buttons">
+						<th v-if="hasActions">
+							<div class="btn-group" role="group" aria-label="action buttons">
+								<template v-if="options.customActions != undefined">
+									<button v-for="customAction in options.customActions" :key="customAction.name" 
+									type="button" class="btn btn-sm" :class="customAction.buttonClass" v-on:click="customAction.action(record)" :aria-label="customAction.label">
+										<font-awesome-icon :icon="['fas', customAction.fontAwesomeIcon]" class="text-white" fixed-width></font-awesome-icon>
+									</button>
+								</template>
 								<button type="button" class="btn btn-primary btn-sm" v-if="options.allowEdit" v-on:click="editRecord(record)" aria-label="Edit">
 									<font-awesome-icon icon="edit" class="text-white" fixed-width></font-awesome-icon>
 								</button>
@@ -237,6 +243,10 @@
 				loadPage();
 			}
 
+			const hasActions = () : boolean => {
+				return props.options.allowEdit || props.options.allowDelete || props.options.customActions != undefined;
+			}
+
 			return {
 				records,
 				page,
@@ -256,7 +266,8 @@
 				up,
 				down,
 				columnHeaderClass,
-				cascadeFilterChanged
+				cascadeFilterChanged,
+				hasActions
 			};
 		},
 	});
