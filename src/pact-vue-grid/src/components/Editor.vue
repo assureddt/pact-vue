@@ -15,6 +15,17 @@
 							{{selectData.display}}
 						</option>
 					</select>
+					<select v-else-if="field.type == 'boolean'" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required">
+						<option v-if="!field.required" :value="undefiend">
+							Unselected
+						</option>
+						<option :value="false">
+							{{field.falseText}}
+						</option>
+						<option :value="true">
+							{{field.trueText}}
+						</option>
+					</select>
 					<input v-else-if="field.type == 'number'" :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern" :min="field.min" :max="field.max"/>
 					<input v-else :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
 				</div>
@@ -48,7 +59,7 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, reactive } from "vue";
-	import { EditField, EditFieldSelect, EditFieldNumber, EditOptions, SelectOption } from "../models";
+	import { EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions, SelectOption } from "../models";
 
 	export default defineComponent({
 		props: {
@@ -57,7 +68,7 @@
 				required: true,
 			},
 			fields: {
-				type: Array as PropType<(EditField | EditFieldSelect | EditFieldNumber)[]>,
+				type: Array as PropType<(EditField | EditFieldSelect | EditFieldNumber | EditFieldSelectBoolean)[]>,
 				required: true,
 			},
 			mode: {

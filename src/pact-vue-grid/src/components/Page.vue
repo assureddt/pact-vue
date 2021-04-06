@@ -8,7 +8,7 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<page-grid v-if="mode == 'grid'" :options="gridOptions" :columns="gridColumns" @change-mode="changeMode"></page-grid>
+					<page-grid v-if="mode == 'grid'" :options="gridOptions" :columns="gridColumns" @change-mode="changeMode" :selectable="false"></page-grid>
 					<page-edit v-if="mode == 'add' || mode == 'edit'" :options="editOptions" :fields="editFields" :mode="mode" @change-mode="changeMode" :editing="editing" :parent="parent"></page-edit>
 				</div>
 			</div>
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref} from "vue";
-	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditOptions} from "../models";
+	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions} from "../models";
     import Gird from "./Grid.vue";
 	import Editor from "./Editor.vue";
 
@@ -38,7 +38,7 @@
 				required: true,
 			},
 			editFields: {
-				type: Array as PropType<(EditField | EditFieldSelect | EditFieldNumber)[]>,
+				type: Array as PropType<(EditField | EditFieldSelect | EditFieldNumber | EditFieldSelectBoolean)[]>,
 				required: true,
 			},
 			pageTitle: {

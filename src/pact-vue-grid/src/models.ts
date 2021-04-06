@@ -10,6 +10,7 @@ export interface GridOptions {
     deleteColumn: string;
     filters?: GridCascadeFilter[];
     customActions?: GridCustomAction[];
+    parent?: number;
 }
 
 export interface GridOptionsOrder {
@@ -53,6 +54,12 @@ export interface EditFieldSelect extends EditField {
     multiple?: boolean;
 }
 
+export interface EditFieldSelectBoolean extends EditField {
+    type: "boolean",
+    trueText: string,
+    falseText: string
+}
+
 export interface EditFieldNumber extends EditField {
     type: "number"
     min?: number;
@@ -84,4 +91,12 @@ export interface GridCustomAction {
     label: string
     buttonClass: string,
     name: string
+}
+
+export interface CRUDGridOptions {
+    gridOptions: GridOptions,
+    gridColumns: (GridColumn | GridColumnOrder)[],
+    editOptions: EditOptions,
+    editFields: (EditField | EditFieldSelect | EditFieldNumber | EditFieldSelectBoolean)[],
+    pageTitle?: string
 }

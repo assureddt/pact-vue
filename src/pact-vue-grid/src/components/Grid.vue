@@ -64,6 +64,9 @@
 			<table class="table table-sm table-bordered">
 				<thead>
 					<tr>
+						<th v-if="selectable" class="select-width">
+							<font-awesome-icon icon="hand-pointer" fixed-width></font-awesome-icon>
+						</th>
 						<th scope="col" class="handy" v-for="column in columns" :key="column.name" v-on:click="changeOrder(column.name)" v-on:keydown="changeOrder(column.name)" :class="columnHeaderClass(column)" tabindex=0>
 							{{ column.display }}
 						</th>
@@ -72,6 +75,9 @@
 				</thead>
 				<tbody>
 					<tr v-for="record in records" :key="record.id">
+						<th v-if="selectable" class="text-center">
+							<input type="checkbox" v-model="seletedRows[record.id]" true-value="true" false-value="false" class="form-check-input" aria-label="select row" v-on:change="selectableChanged(record)"/>
+						</th>
 						<td v-for="column in columns" :key="column.name + '-' + record.id">
 							<template v-if="column.type == 'text'">
 								{{ record[column.name] }}
@@ -124,9 +130,17 @@
 			columns: {
 				type: Array as PropType<(GridColumn | GridColumnOrder)[]>,
 				required: true,
+			},
+			selectable: {
+				type: Boolean,
+				required: true,
+			},
+			parent: {
+				type: Number,
+				required: false,
 			}
 		},
-		emits: ["changeMode"],
+		emits: ["changeMode", "selectionChanged"],
 		components: {
 			"cascade-filters": CascadeFilters
 		},
@@ -140,6 +154,13 @@
 			const pages = ref(0);
 			const deleting = ref<GridRow | undefined>(undefined);
 			const parent = ref<number | undefined>();
+			const seletedRows = ref<SelectedRow>({});
+
+			if(props.options.parent != undefined)
+				parent.value = props.options.parent.valueOf();
+
+			if(props.parent != undefined)
+				parent.value = props.parent.valueOf();
 
 			const loadPage = async () => {
 				fetch(
@@ -247,6 +268,28 @@
 				return props.options.allowEdit || props.options.allowDelete || props.options.customActions != undefined;
 			}
 
+			const selectableChanged = (record: GridRow) => {
+				let anyChecked = false;
+				for(const key in seletedRows.value) {
+					if(parseInt(key) == record.id) {
+						if(seletedRows.value[key] == "true")
+						{
+							anyChecked = true;
+							emit("selectionChanged", record.id);
+						}
+						continue;
+					}
+					seletedRows.value[key] = false;
+				}
+				if(!anyChecked)
+					emit("selectionChanged", undefined);
+			};
+
+			watch(props, () => {
+				parent.value = props.parent;
+				loadPage();
+			});
+
 			return {
 				records,
 				page,
@@ -267,10 +310,16 @@
 				down,
 				columnHeaderClass,
 				cascadeFilterChanged,
-				hasActions
+				hasActions,
+				seletedRows,
+				selectableChanged,
 			};
 		},
 	});
+
+	interface SelectedRow {
+		[key: number]: boolean | undefined | string;
+	}
 </script>
 
 <style scoped>
@@ -283,4 +332,7 @@
 	.search-width {
 		min-width: 250px;
 	}
+	.select-width {
+		width: 20px;
+	};
 </style>
