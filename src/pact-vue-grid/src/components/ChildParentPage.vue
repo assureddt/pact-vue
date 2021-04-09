@@ -86,7 +86,7 @@
             "page-grid": Gird,
 			"page-edit": Editor
         },
-		setup(props) {
+		setup() {
 			const mode = ref("grid");
 			const rawMode = ref("grid");
 			const editing = ref<number | undefined>(undefined);

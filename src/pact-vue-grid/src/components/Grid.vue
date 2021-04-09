@@ -229,7 +229,7 @@
 			const confirmDelete = () => {
 				fetch(props.options.delete + "?id=" + deleting.value?.id)
 					.then((response) => response.json())
-					.then((_) => {
+					.then(() => {
 						cancelDelete();
 						loadPage();
 					});
@@ -238,7 +238,7 @@
 			const up = (item: GridRow, column: GridColumnOrder) => {
 				fetch(column.up + "?id=" + item.id)
 					.then((response) => response.json())
-					.then((_) => {
+					.then(() => {
 						cancelDelete();
 						loadPage();
 					});
@@ -247,7 +247,7 @@
 			const down = (item: GridRow, column: GridColumnOrder) => {
 				fetch(column.down+ "?id=" + item.id)
 					.then((response) => response.json())
-					.then((_) => {
+					.then(() => {
 						cancelDelete();
 						loadPage();
 					});

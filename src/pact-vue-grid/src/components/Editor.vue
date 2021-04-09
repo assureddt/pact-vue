@@ -144,7 +144,7 @@
 					});
 			}
 
-			async function postData(url:string, data: any) {
+			async function postData(url:string, data: Values) {
 				const response = await fetch(url, {
 					method: 'POST',
 					cache: 'no-cache',
