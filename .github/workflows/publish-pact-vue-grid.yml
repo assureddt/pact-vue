@@ -1,6 +1,8 @@
 name: Publish pact-vue-grid
 
-on: push
+on:
+  release:
+    types: [ created ]
 
 defaults:
   run:
