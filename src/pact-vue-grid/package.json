@@ -7,7 +7,7 @@
     "url": "https://github.com/assureddt/pact-vue/"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.35",
