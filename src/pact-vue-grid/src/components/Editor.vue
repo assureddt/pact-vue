@@ -8,27 +8,44 @@
 				</div>
 			</div>
 			<div class="row">
-				<div v-for="field in fields" :key="field.name" class="mb-3" :class="columnClass">
-					<label :for="field.name" class="form-label">{{ field.display }}</label>
-					<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required" :multiple="field.multiple">
-						<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
-							{{selectData.display}}
-						</option>
-					</select>
-					<select v-else-if="field.type == 'boolean'" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required">
-						<option v-if="!field.required" :value="undefiend">
-							Unselected
-						</option>
-						<option :value="false">
-							{{field.falseText}}
-						</option>
-						<option :value="true">
-							{{field.trueText}}
-						</option>
-					</select>
-					<input v-else-if="field.type == 'number'" :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern" :min="field.min" :max="field.max"/>
-					<input v-else :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
-				</div>
+				<template v-for="field in fields" :key="field.name">
+					<div class="mb-3" :class="columnClass" v-if="field.type != 'markdown'">
+						<label :for="field.name" class="form-label">{{ field.display }}</label>
+						<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required" :multiple="field.multiple">
+							<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
+								{{selectData.display}}
+							</option>
+						</select>
+						<select v-else-if="field.type == 'boolean'" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required">
+							<option v-if="!field.required" :value="undefiend">
+								Unselected
+							</option>
+							<option :value="false">
+								{{field.falseText}}
+							</option>
+							<option :value="true">
+								{{field.trueText}}
+							</option>
+						</select>
+						<input v-else-if="field.type == 'number'" :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern" :min="field.min" :max="field.max"/>
+						<input v-else :type="field.type" class="form-control" :id="field.name" :placeholder="field.placeholder" v-model="record[field.name]" :required="field.required" :pattern="field.pattern"/>
+					</div>
+					<div v-if="field.type == 'markdown'" class="col-12">
+						<div class="row">
+							<div class="col-12">
+								<label :for="field.name" class="form-label">{{ field.display }}</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-lg-6">
+								<textarea :id="field.name" class="form-control" :placeholder="field.placeholder" :required="field.required" :pattern="field.pattern" v-model="record[field.name]" rows="10" />
+							</div>
+							<div class="col-12 col-lg-6 border border-primary" v-html="convertToHtml(record[field.name])">
+							</div>
+						</div>
+					</div>
+				</template>
+				
 			</div>
 			<div class="row" v-if="serverMessage.length > 0">
 				<div class="col-12 mb-3">
@@ -60,6 +77,7 @@
 <script lang="ts">
 	import { defineComponent, PropType, ref, reactive } from "vue";
 	import { EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions, SelectOption } from "../models";
+	import * as marked from "marked";
 
 	export default defineComponent({
 		props: {
@@ -155,6 +173,11 @@
 				});
 				return response.json();
 			}
+
+			const convertToHtml = (value: string) => {
+				if(value == null || value == undefined) return;
+				return marked.parse(value);
+			}
 			
 			return {
 				record,
@@ -163,7 +186,8 @@
 				serverMessage,
 				gridMode,
 				selectDataMap,
-				columnClass
+				columnClass,
+				convertToHtml
 			};
 		},
 	});

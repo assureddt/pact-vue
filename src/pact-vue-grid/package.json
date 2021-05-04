@@ -1,6 +1,6 @@
 {
   "name": "@assureddt/pact-vue-grid",
-  "version": "0.0.19-beta",
+  "version": "0.0.20-beta",
   "description": "Vue 3 grid system",
   "repository": {
     "type": "git",
@@ -13,9 +13,11 @@
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/vue-fontawesome": "3.0.0-3",
     "core-js": "3.11.0",
+    "marked": "2.0.3",
     "vue": "3.0.11"
   },
   "devDependencies": {
+    "@types/marked": "2.0.2",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.0",
     "@vue/cli-plugin-babel": "4.5.12",
