@@ -40,7 +40,7 @@
 							<div class="col-12 col-lg-6">
 								<textarea :id="field.name" class="form-control" :placeholder="field.placeholder" :required="field.required" :pattern="field.pattern" v-model="record[field.name]" rows="10" />
 							</div>
-							<div class="col-12 col-lg-6 border border-primary" v-html="convertToHtml(record[field.name])">
+							<div class="col-12 col-lg-6 border border-primary my-3 my-lg-0" v-html="convertToHtml(record[field.name])">
 							</div>
 						</div>
 					</div>
