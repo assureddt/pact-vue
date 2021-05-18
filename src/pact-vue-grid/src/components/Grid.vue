@@ -75,9 +75,9 @@
 				</thead>
 				<tbody>
 					<tr v-for="record in records" :key="record.id">
-						<th v-if="selectable" class="text-center">
+						<td v-if="selectable" class="text-center">
 							<input type="checkbox" v-model="seletedRows[record.id]" true-value="true" false-value="false" class="form-check-input" aria-label="select row" v-on:change="selectableChanged(record)"/>
-						</th>
+						</td>
 						<td v-for="column in columns" :key="column.name + '-' + record.id">
 							<template v-if="column.type == 'text'">
 								{{ record[column.name] }}
@@ -93,7 +93,7 @@
 								</div>
 							</template>
 						</td>
-						<th v-if="hasActions">
+						<td v-if="hasActions">
 							<div class="btn-group" role="group" aria-label="action buttons">
 								<template v-if="options.customActions != undefined">
 									<button v-for="customAction in options.customActions" :key="customAction.name" 
@@ -108,7 +108,7 @@
 									<font-awesome-icon icon="times" class="text-white" fixed-width></font-awesome-icon>
 								</button>
 							</div>
-						</th>
+						</td>
 					</tr>
 				</tbody>
 			</table>
