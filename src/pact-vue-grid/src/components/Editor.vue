@@ -7,6 +7,11 @@
 					<h5 v-if="mode == 'add'">{{options.addTitle}}</h5>
 				</div>
 			</div>
+			<div class="row" v-if="subPageTitle != undefiend">
+				<div class="col-12 mb-3">
+					<h6>{{ subPageTitle }}</h6>
+				</div>
+			</div>
 			<div class="row">
 				<template v-for="field in fields" :key="field.name">
 					<div class="mb-3" :class="columnClass" v-if="field.type != 'markdown'">
@@ -99,6 +104,10 @@
 			},
 			parent: {
 				type: Number,
+				required: false
+			},
+			subPageTitle: {
+				type: String,
 				required: false
 			}
 		},

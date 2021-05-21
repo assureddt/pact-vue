@@ -62,7 +62,8 @@
 				const currentValue = fitlerValues[lastFilter?.name];
 
 				if (lastValueSent.value == undefined || lastValueSent.value != currentValue) {
-					emit("changedFilter", currentValue);
+
+					emit("changedFilter", currentValue, getCurrentTextDisplay());
 					lastValueSent.value = currentValue;
 				}
 			});
@@ -93,6 +94,22 @@
 
 			const getFilterId = (filter: GridCascadeFilter) : string => {
 				return "filter-" + filter.name;
+			}
+
+			const getCurrentTextDisplay = () => {
+				if (props.filters == undefined || filterDataMap == undefined) return;
+				let output = "";
+				for (let filter of props.filters) {
+					var options = filterDataMap.get(filter.name);
+					if(options == undefined) continue;
+					var values = options.find((x) => x.id == fitlerValues[filter.name]);
+					if(values == undefined) continue;
+
+					if(output.length > 0)
+						output = output + " - ";
+					output += values.display;
+				}
+				return output;
 			}
 
 			return {

@@ -9,7 +9,7 @@
 			<div class="row">
 				<div class="col">
 					<page-grid v-if="mode == 'grid'" :options="gridOptions" :columns="gridColumns" @change-mode="changeMode" :selectable="false"></page-grid>
-					<page-edit v-if="mode == 'add' || mode == 'edit'" :options="editOptions" :fields="editFields" :mode="mode" @change-mode="changeMode" :editing="editing" :parent="parent"></page-edit>
+					<page-edit v-if="mode == 'add' || mode == 'edit'" :options="editOptions" :fields="editFields" :mode="mode" @change-mode="changeMode" :editing="editing" :parent="parent" :sub-page-title="editAddPageTitle"></page-edit>
 				</div>
 			</div>
 		</div>
@@ -54,18 +54,21 @@
 			const mode = ref("grid");
 			const editing = ref<number | undefined>(undefined);
 			const parent = ref<number | undefined>(undefined);
+			const editAddPageTitle = ref<string | undefined>(undefined);
 
-			const changeMode = (changeToMode: string, id?: number, parentId?: number) => {
+			const changeMode = (changeToMode: string, id?: number, parentId?: number, subPageTitle?: string) => {
 				editing.value = id;
 				parent.value = parentId;
 				mode.value = changeToMode;
+				editAddPageTitle.value = subPageTitle;
 			}
 
 			return {
 				mode,
 				changeMode,
 				editing,
-				parent
+				parent,
+				editAddPageTitle
 			};
 		},
 	});

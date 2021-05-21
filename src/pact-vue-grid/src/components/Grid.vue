@@ -6,35 +6,7 @@
 			</button>
 		</div>
 		<cascade-filters :filters="options.filters" @changed-filter="cascadeFilterChanged"></cascade-filters>
-		<div class="col-12" v-if="pages > 1">
-			<ul class="pagination pagination-sm handy mb-0">
-				<li class="page-item" v-if="page > 0">
-					<button class="page-link" v-on:click="adjustPage(-1)">
-						<font-awesome-icon icon="arrow-left" fixed-width></font-awesome-icon>
-					</button>
-				</li>
-				<li class="page-item" v-if="page - 2 >= 0">
-					<button class="page-link" v-on:click="changePage(page - 2)">{{ page - 1 }}</button>
-				</li>
-				<li class="page-item" v-if="page - 1 >= 0">
-					<button class="page-link" v-on:click="changePage(page - 1)">{{ page }}</button>
-				</li>
-				<li class="page-item active">
-					<button class="page-link">{{ page + 1 }}</button>
-				</li>
-				<li class="page-item" v-if="page + 1 < pages">
-					<button class="page-link" v-on:click="changePage(page + 1)">{{ page + 2 }}</button>
-				</li>
-				<li class="page-item" v-if="page + 2 < pages">
-					<button class="page-link" v-on:click="changePage(page + 2)">{{ page + 3 }}</button>
-				</li>
-				<li class="page-item" v-if="page < pages - 1">
-					<button class="page-link" v-on:click="adjustPage(1)">
-						<font-awesome-icon icon="arrow-right" fixed-width></font-awesome-icon>
-					</button>
-				</li>
-			</ul>
-		</div>
+		<pagination :total="total" :page-size="options.pageSize" @page-changed="paginationPageChanged"></pagination>
 		<div class="col-12 ms-auto">
 			<div class="input-group input-group-sm">
 				<label class="input-group-text" for="search-box">Search</label>
@@ -120,6 +92,7 @@
 	import { defineComponent, PropType, ref, onMounted, watch } from "vue";
 	import { GridOptions, GridColumn, GridRow, GridOrderDirection, GridColumnOrder } from "../models";
 	import CascadeFilters from "./CascadeFilters.vue";
+	import Pagination from "./Pagination.vue";
 
 	export default defineComponent({
 		props: {
@@ -142,7 +115,8 @@
 		},
 		emits: ["changeMode", "selectionChanged"],
 		components: {
-			"cascade-filters": CascadeFilters
+			"cascade-filters": CascadeFilters,
+			"pagination": Pagination
 		},
 		setup(props, { emit }) {
 			const records = ref<GridRow[]>([]);
@@ -151,10 +125,10 @@
 			const orderColumnName = ref(props.options.order.columnName);
 			const orderDirection = ref(props.options.order.direction);
 			const filter = ref("");
-			const pages = ref(0);
 			const deleting = ref<GridRow | undefined>(undefined);
 			const parent = ref<number | undefined>();
 			const seletedRows = ref<SelectedRow>({});
+			const subPageTitle = ref("");
 
 			if(props.options.parent != undefined)
 				parent.value = props.options.parent.valueOf();
@@ -182,7 +156,6 @@
 						records.value.splice(0);
 						data.records.forEach((x: GridRow) => records.value.push(x));
 						total.value = data.count;
-						pages.value = Math.ceil(data.count / props.options.pageSize);
 					});
 			};
 			onMounted(loadPage);
@@ -195,18 +168,8 @@
 				await loadPage();
 			};
 
-			const changePage = async (position: number) => {
-				page.value = position;
-				await loadPage();
-			};
-
-			const adjustPage = async (value: number) => {
-				page.value = page.value + value;
-				await loadPage();
-			};
-
 			const addMode = () => {
-				emit("changeMode", "add", undefined, parent.value);
+				emit("changeMode", "add", undefined, parent.value, subPageTitle.value);
 			};
 
 			watch(filter, () => {
@@ -215,7 +178,7 @@
 			});
 
 			const editRecord = (item: GridRow) => {
-				emit("changeMode", "edit", item.id, undefined);
+				emit("changeMode", "edit", item.id, undefined, subPageTitle.value);
 			};
 
 			const deleteRecord = (item: GridRow) => {
@@ -259,8 +222,9 @@
 				}
 			}
 
-			const cascadeFilterChanged = (parentId: number) => {
+			const cascadeFilterChanged = (parentId: number, display: string) => {
 				parent.value = parentId;
+				subPageTitle.value = display;
 				loadPage();
 			}
 
@@ -290,6 +254,11 @@
 				loadPage();
 			});
 
+			const paginationPageChanged = (pageIndex: number) => {
+				page.value = pageIndex;
+				loadPage();
+			}
+
 			return {
 				records,
 				page,
@@ -297,9 +266,6 @@
 				loadPage,
 				changeOrder,
 				filter,
-				pages,
-				changePage,
-				adjustPage,
 				addMode,
 				editRecord,
 				deleteRecord,
@@ -313,6 +279,7 @@
 				hasActions,
 				seletedRows,
 				selectableChanged,
+				paginationPageChanged
 			};
 		},
 	});
