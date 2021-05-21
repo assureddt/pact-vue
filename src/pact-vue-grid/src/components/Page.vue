@@ -57,10 +57,10 @@
 			const editAddPageTitle = ref<string | undefined>(undefined);
 
 			const changeMode = (changeToMode: string, id?: number, parentId?: number, subPageTitle?: string) => {
+				editAddPageTitle.value = subPageTitle;
 				editing.value = id;
 				parent.value = parentId;
 				mode.value = changeToMode;
-				editAddPageTitle.value = subPageTitle;
 			}
 
 			return {
