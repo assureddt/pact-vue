@@ -3,3 +3,4 @@ export * from "./crudGrid";
 export * from "./childParentCRUDGrid";
 export { default as CRUDPageComponent } from "./components/Page.vue";
 export { default as CRUDGridComponent } from "./components/Grid.vue";
+export { default as Pagination } from "./components/Pagination.vue";
