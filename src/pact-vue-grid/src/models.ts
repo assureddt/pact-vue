@@ -11,6 +11,8 @@ export interface GridOptions {
     filters?: GridCascadeFilter[];
     customActions?: GridCustomAction[];
     parent?: number;
+    selectable: boolean;
+    selectionMode?: GridSelectionMode;
 }
 
 export interface GridOptionsOrder {
@@ -19,6 +21,7 @@ export interface GridOptionsOrder {
 }
 
 export enum GridOrderDirection { ascending = 0, descending = 1 }
+export enum GridSelectionMode { single = 0, multiple = 1 }
 
 export interface GridColumn {
     display: string;
@@ -28,6 +31,7 @@ export interface GridColumn {
 
 export interface GridRow {
     id: number;
+    [key: string]: boolean | undefined | string | number;
 }
 
 export interface EditOptions {
