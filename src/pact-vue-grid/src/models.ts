@@ -11,7 +11,7 @@ export interface GridOptions {
     filters?: GridCascadeFilter[];
     customActions?: GridCustomAction[];
     parent?: number;
-    selectable: boolean;
+    selectable: true | undefined;
     selectionMode?: GridSelectionMode;
 }
 
