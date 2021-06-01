@@ -8,7 +8,7 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<page-grid v-if="rawMode == 'grid'" :options="parentGridOptions" :columns="parentGridColumns" @change-mode="parentChangeMode" :selectable="true" @selection-changed="selectionChanged"></page-grid>
+					<page-grid v-if="rawMode == 'grid'" :options="parentGridOptions" :columns="parentGridColumns" @change-mode="parentChangeMode" @selection-changed="selectionChanged"></page-grid>
 				</div>
 			</div>
 		</div>

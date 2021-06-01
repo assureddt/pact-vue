@@ -50,9 +50,8 @@
 						</div>
 					</div>
 				</template>
-				
 			</div>
-			<div class="row" v-if="serverMessage.length > 0">
+			<div class="row" v-if="serverMessage != undefined && serverMessage.length > 0">
 				<div class="col-12 mb-3">
 					<div class="alert alert-danger mb-0" role="alert">
 						{{serverMessage}}

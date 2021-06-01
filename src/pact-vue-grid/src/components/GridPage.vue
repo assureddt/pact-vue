@@ -42,7 +42,8 @@
 			@update-total="updateTotal"
 			@edit="gridEdit"
 			@delete="gridDelete"
-			@selection-changed="selectionChangedPassthrough"></grid-component>
+			@selection-changed="selectionChangedPassthrough"
+			:key="refreshCount"></grid-component>
 		</div>
 	</div>
 </template>
@@ -158,7 +159,8 @@
 				paginationPageChanged,
 				computedParent,
 				refreshCount,
-				referenceTitle
+				referenceTitle,
+				deletingDisplay
 			};
 		},
 	});
