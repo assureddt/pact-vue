@@ -36,7 +36,7 @@
 <script lang="ts">
 	import { defineComponent, PropType, ref} from "vue";
 	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions} from "../models";
-    import Gird from "./Grid.vue";
+    import Gird from "./GridPage.vue";
 	import Editor from "./Editor.vue";
 
 	export default defineComponent({
