@@ -236,11 +236,9 @@
 					let selectedIds: number[] = []; 
 					for (const key in seletedRows.value) {
 						const numberKey = parseInt(key);
-						if (numberKey == record.id) {
-							if (seletedRows.value[key] == "true") {
-								selectedIds.push(numberKey);
-								anyChecked = true;
-							}
+						if (seletedRows.value[key] == "true") {
+							selectedIds.push(numberKey);
+							anyChecked = true;
 						}
 					}
 					emit("selectionChanged", selectedIds);
