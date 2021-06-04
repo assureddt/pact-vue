@@ -17,6 +17,9 @@
 					<div class="mb-3" :class="columnClass" v-if="field.type != 'markdown'">
 						<label :for="field.name" class="form-label">{{ field.display }}</label>
 						<select v-if="field.type == 'select' && selectDataMap.has(field.name)" class="form-select" :id="field.name" v-model="record[field.name]" :required="field.required" :multiple="field.multiple">
+							<option v-if="!field.required && !field.multiple" :value="null">
+								Unselected
+							</option>
 							<option v-for="selectData in selectDataMap.get(field.name)" :key="selectData.id" :value="selectData.id">
 								{{selectData.display}}
 							</option>
