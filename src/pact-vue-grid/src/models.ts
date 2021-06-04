@@ -95,6 +95,7 @@ export interface GridCustomAction {
     label: string
     buttonClass: string,
     name: string
+    shouldDisable?(row: GridRow): boolean
 }
 
 export interface CRUDGridOptions {

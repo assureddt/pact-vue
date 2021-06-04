@@ -136,7 +136,12 @@
 					});
 
 					if(props.editing == undefined)
-						record.value[field.name] = [];
+					{
+						if(selectField.multiple)
+							record.value[field.name] = [];
+						else if((selectField.multiple == null || selectField.multiple == false) && !selectField.required)
+							record.value[field.name] = null;
+					}
 				}
 			});
 
@@ -205,7 +210,7 @@
 	});
 
 	interface Values {
-		[key: string]: number | string | [];
+		[key: string]: number | string | [] | null;
 	}
 </script>
 
