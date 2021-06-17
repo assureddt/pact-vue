@@ -23,6 +23,7 @@
 							:field="field"
 							:model-value="record[field.name]"
 							:editor-values="record"
+							:parent="parent"
 							@update:model-value="record[field.name] = $event"
 						></component>
 						<select
