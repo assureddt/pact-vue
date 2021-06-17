@@ -22,6 +22,7 @@
 							:select-options="selectOptions.get(field.name)"
 							:field="field"
 							:model-value="record[field.name]"
+							:editor-values="record"
 							@update:model-value="record[field.name] = $event"
 						></component>
 						<select
