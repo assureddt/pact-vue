@@ -1,13 +1,13 @@
-import { createApp, ComponentPublicInstance  } from "vue";
+import { createApp, ComponentPublicInstance, App  } from "vue";
 import Page from "./components/Page.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { CRUDGridOptions } from "./models";
 
 export class CRUDGrid {
-    constructor(selector: string, options: CRUDGridOptions) {
+    constructor(selector: string, options: CRUDGridOptions, setupCustomComponents?: (app: App<Element>) => App<Element>) {
         this.options = options;
 
-        this.vm = createApp(Page, {
+        let app = createApp(Page, {
             gridOptions: options.gridOptions,
             gridColumns: options.gridColumns,
             editOptions: options.editOptions,
@@ -15,7 +15,11 @@ export class CRUDGrid {
             pageTitle: options.pageTitle
         })
         .component('font-awesome-icon', FontAwesomeIcon)
-        .mount(selector);
+
+        if(setupCustomComponents != null)
+            app = setupCustomComponents(app);
+
+        this.vm = app.mount(selector);
     }
     
     options: CRUDGridOptions

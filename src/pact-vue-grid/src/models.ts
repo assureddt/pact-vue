@@ -50,6 +50,7 @@ export interface EditField {
     required: boolean;
     type: string;
     pattern?: string;
+    customComponent?: string;
 }
 
 export interface EditFieldSelect extends EditField {
@@ -104,4 +105,8 @@ export interface CRUDGridOptions {
     editOptions: EditOptions,
     editFields: (EditField | EditFieldSelect | EditFieldNumber | EditFieldSelectBoolean)[],
     pageTitle?: string
+}
+
+export interface EditorValues {
+    [key: string]: number | string | [] | null;
 }
