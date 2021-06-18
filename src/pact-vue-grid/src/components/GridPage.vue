@@ -70,7 +70,7 @@
 				required: false,
 			},
 		},
-		emits: ["changeMode", "selectionChanged"],
+		emits: ["changeMode", "selectionChanged", "refreshed"],
 		components: {
 			"cascade-filters": CascadeFilters,
 			"pagination": Pagination,
@@ -96,6 +96,7 @@
 
 			const updateTotal = (count: number) => {
 				total.value = count;
+				emit("refreshed");
 			}
 
 			const gridEdit = (id: number) => {
