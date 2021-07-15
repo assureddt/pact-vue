@@ -143,14 +143,6 @@
 			const selectedRows = ref<SelectedRow>({});
 
 			const loadPage = async () => {
-				let parentSection = "";
-				if (props.queryData != undefined) {
-					props.queryData.forEach((value, key) => {
-						if (parentSection.length > 0) parentSection += "&";
-						parentSection += key + "=" + value;
-					});
-				}
-
 				fetch(
 					props.options.read +
 						"?page=" +
@@ -163,7 +155,7 @@
 						orderDirection.value +
 						"&filter=" +
 						props.filter +
-						(parentSection != undefined ? "&" + parentSection : "")
+						(props.queryData != undefined ? "&" + props.queryData.createUrlData() : "")
 				)
 					.then((response) => response.json())
 					.then((data) => {

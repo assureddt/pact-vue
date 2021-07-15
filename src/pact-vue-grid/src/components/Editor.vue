@@ -133,7 +133,16 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, reactive } from "vue";
-	import { EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions, SelectOption, EditorValues } from "../models";
+	import {
+		EditField,
+		EditFieldSelect,
+		EditFieldNumber,
+		EditFieldSelectBoolean,
+		EditOptions,
+		SelectOption,
+		EditorValues,
+		QueryData,
+	} from "../models";
 	import * as marked from "marked";
 
 	export default defineComponent({
@@ -154,8 +163,8 @@
 				type: Number,
 				required: false,
 			},
-			parent: {
-				type: Number,
+			queryData: {
+				type: Object as PropType<QueryData>,
 				required: false,
 			},
 			subPageTitle: {
@@ -206,7 +215,7 @@
 				}
 
 				let url = props.mode == "add" ? props.options.add : props.options.edit;
-				if (props.mode == "add" && props.parent != undefined) url += "?parentId=" + props.parent;
+				if (props.mode == "add" && props.queryData != undefined) url += "?" + props.queryData.createUrlData();
 				postData(url, record.value).then((data) => {
 					if (data.result == "OK") {
 						gridMode();
@@ -223,9 +232,7 @@
 						record.value = data.record;
 						loaded.value = true;
 					});
-			}
-			else
-				loaded.value = true;
+			} else loaded.value = true;
 
 			async function postData(url: string, data: EditorValues) {
 				const response = await fetch(url, {
@@ -253,7 +260,7 @@
 				selectOptions,
 				columnClass,
 				convertToHtml,
-				loaded
+				loaded,
 			};
 		},
 	});

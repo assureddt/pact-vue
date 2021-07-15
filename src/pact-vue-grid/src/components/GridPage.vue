@@ -1,6 +1,6 @@
 <template>
 	<div class="row row-cols-lg-auto g-3 align-items-center mb-1">
-		<div class="col-12" v-if="options.allowAdd">
+		<div class="col-1" v-if="options.allowAdd">
 			<button class="btn btn-primary btn-sm" v-on:click="addMode" aria-label="Create new">
 				<font-awesome-icon icon="plus" class="text-white" fixed-width></font-awesome-icon>
 			</button>

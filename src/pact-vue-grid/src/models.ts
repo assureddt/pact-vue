@@ -102,7 +102,16 @@ export interface GridChildFilter extends GridBaseFilter {
 
 export type GridFilter = GridBasicFilter | GridChildFilter;
 
-export class QueryData extends Map<string, number> {}
+export class QueryData extends Map<string, number> {
+	createUrlData(): string {
+		let urlSegment = "";
+		this.forEach((value, key) => {
+			if (urlSegment.length > 0) urlSegment += "&";
+			urlSegment += key + "=" + value;
+		});
+		return urlSegment;
+	}
+}
 
 export interface SelectOption {
 	id: number;
