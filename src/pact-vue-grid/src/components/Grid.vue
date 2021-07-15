@@ -1,113 +1,109 @@
 <template>
-    <table class="table table-sm table-bordered">
-        <thead>
-            <tr>
-                <th v-if="options.selectable" class="select-width">
-                    <font-awesome-icon icon="hand-pointer" fixed-width></font-awesome-icon>
-                </th>
-                <th
-                    scope="col"
-                    class="handy"
-                    v-for="column in columns"
-                    :key="column.name"
-                    v-on:click="changeOrder(column.name)"
-                    v-on:keydown="changeOrder(column.name)"
-                    :class="columnHeaderClass(column)"
-                    tabindex="0"
-                >
-                    {{ column.display }}
-                </th>
-                <th v-if="hasActions" :style="{ width: options.buttonsWidth + 'px' }">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="record in records" :key="record.id">
-                <td v-if="options.selectable" class="text-center">
-                    <input
-                        type="checkbox"
-                        v-model="seletedRows[record.id]"
-                        true-value="true"
-                        false-value="false"
-                        class="form-check-input"
-                        aria-label="select row"
-                        v-on:change="selectableChanged(record)"
-                    />
-                </td>
-                <td v-for="column in columns" :key="column.name + '-' + record.id">
-                    <template v-if="column.type == 'text'">
-                        {{ record[column.name] }}
-                    </template>
-                    <template v-else-if="column.type == 'order'">
-                        <div class="btn-group" role="group" aria-label="order buttons">
-                            <button
-                                type="button"
-                                class="btn btn-success btn-sm"
-                                v-on:click="up(record, column)"
-                                v-if="record[column.name] != column.min"
-                                aria-label="Move up"
-                            >
-                                <font-awesome-icon icon="arrow-up" class="text-white" fixed-width></font-awesome-icon>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-success btn-sm"
-                                v-on:click="down(record, column)"
-                                v-if="record[column.name] != total - 1"
-                                aria-label="Move down"
-                            >
-                                <font-awesome-icon icon="arrow-down" class="text-white" fixed-width></font-awesome-icon>
-                            </button>
-                        </div>
-                    </template>
-                </td>
-                <td v-if="hasActions">
-                    <div class="btn-group" role="group" aria-label="action buttons">
-                        <template v-if="options.customActions != undefined">
-                            <button
-                                v-for="customAction in options.customActions"
-                                :key="customAction.name"
-                                type="button"
-                                class="btn btn-sm"
-                                :class="customAction.buttonClass"
-                                v-on:click="customAction.action(record)"
-                                :aria-label="customAction.label"
+	<table class="table table-sm table-bordered">
+		<thead>
+			<tr>
+				<th v-if="options.selectable" class="select-width">
+					<font-awesome-icon icon="hand-pointer" fixed-width></font-awesome-icon>
+				</th>
+				<th
+					scope="col"
+					class="handy"
+					v-for="column in columns"
+					:key="column.name"
+					v-on:click="changeOrder(column.name)"
+					v-on:keydown="changeOrder(column.name)"
+					:class="columnHeaderClass(column)"
+					tabindex="0"
+				>
+					{{ column.display }}
+				</th>
+				<th v-if="hasActions()" :style="{ width: options.buttonsWidth + 'px' }">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="record in records" :key="record.id">
+				<td v-if="options.selectable" class="text-center">
+					<input
+						type="checkbox"
+						v-model="selectedRows[record.id]"
+						true-value="true"
+						false-value="false"
+						class="form-check-input"
+						aria-label="select row"
+						v-on:change="selectableChanged(record)"
+					/>
+				</td>
+				<td v-for="column in columns" :key="column.name + '-' + record.id">
+					<template v-if="column.type == 'text'">
+						{{ record[column.name] }}
+					</template>
+					<template v-else-if="column.type == 'order'">
+						<div class="btn-group" role="group" aria-label="order buttons">
+							<button
+								type="button"
+								class="btn btn-success btn-sm"
+								v-on:click="up(record, column)"
+								v-if="record[column.name] != column.min"
+								aria-label="Move up"
+							>
+								<font-awesome-icon icon="arrow-up" class="text-white" fixed-width></font-awesome-icon>
+							</button>
+							<button
+								type="button"
+								class="btn btn-success btn-sm"
+								v-on:click="down(record, column)"
+								v-if="record[column.name] != total - 1"
+								aria-label="Move down"
+							>
+								<font-awesome-icon icon="arrow-down" class="text-white" fixed-width></font-awesome-icon>
+							</button>
+						</div>
+					</template>
+				</td>
+				<td v-if="hasActions()">
+					<div class="btn-group" role="group" aria-label="action buttons">
+						<template v-if="options.customActions != undefined">
+							<button
+								v-for="customAction in options.customActions"
+								:key="customAction.name"
+								type="button"
+								class="btn btn-sm"
+								:class="customAction.buttonClass"
+								v-on:click="customAction.action(record)"
+								:aria-label="customAction.label"
 								:disabled="customAction.shouldDisable != null && customAction.shouldDisable(record)"
-                            >
-                                <font-awesome-icon
-                                    :icon="['fas', customAction.fontAwesomeIcon]"
-                                    class="text-white"
-                                    fixed-width
-                                ></font-awesome-icon>
-                            </button>
-                        </template>
-                        <button
-                            type="button"
-                            class="btn btn-primary btn-sm"
-                            v-if="options.allowEdit"
-                            v-on:click="editRecord(record)"
-                            aria-label="Edit"
-                        >
-                            <font-awesome-icon icon="edit" class="text-white" fixed-width></font-awesome-icon>
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-danger btn-sm"
-                            v-if="options.allowDelete"
-                            v-on:click="deleteRecord(record)"
-                            aria-label="Delete"
-                        >
-                            <font-awesome-icon icon="times" class="text-white" fixed-width></font-awesome-icon>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+							>
+								<font-awesome-icon :icon="['fas', customAction.fontAwesomeIcon]" class="text-white" fixed-width></font-awesome-icon>
+							</button>
+						</template>
+						<button
+							type="button"
+							class="btn btn-primary btn-sm"
+							v-if="options.allowEdit"
+							v-on:click="editRecord(record)"
+							aria-label="Edit"
+						>
+							<font-awesome-icon icon="edit" class="text-white" fixed-width></font-awesome-icon>
+						</button>
+						<button
+							type="button"
+							class="btn btn-danger btn-sm"
+							v-if="options.allowDelete"
+							v-on:click="deleteRecord(record)"
+							aria-label="Delete"
+						>
+							<font-awesome-icon icon="times" class="text-white" fixed-width></font-awesome-icon>
+						</button>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </template>
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, onMounted, watch } from "vue";
-	import { GridOptions, GridColumn, GridRow, GridOrderDirection, GridColumnOrder, GridSelectionMode } from "../models";
+	import { GridOptions, GridColumn, GridRow, GridOrderDirection, GridColumnOrder, GridSelectionMode, QueryData } from "../models";
 
 	export default defineComponent({
 		props: {
@@ -119,24 +115,24 @@
 				type: Array as PropType<(GridColumn | GridColumnOrder)[]>,
 				required: true,
 			},
-			parent: {
-				type: Number,
+			queryData: {
+				type: Object as PropType<QueryData>,
 				required: false,
 			},
-            filter: {
-                type: String,
-                required: false
-            },
-            page: {
-                type: Number,
-                default: 0,
-                required: false
-            },
-            refreshCount: {
-                type: Number,
-                default: 0,
-                required: false
-            }
+			filter: {
+				type: String,
+				required: false,
+			},
+			page: {
+				type: Number,
+				default: 0,
+				required: false,
+			},
+			refreshCount: {
+				type: Number,
+				default: 0,
+				required: false,
+			},
 		},
 		emits: ["edit", "delete", "selectionChanged", "updateTotal"],
 		setup(props, { emit }) {
@@ -144,9 +140,17 @@
 			const total = ref(0);
 			const orderColumnName = ref(props.options.order.columnName);
 			const orderDirection = ref(props.options.order.direction);
-			const seletedRows = ref<SelectedRow>({});
+			const selectedRows = ref<SelectedRow>({});
 
 			const loadPage = async () => {
+				let parentSection = "";
+				if (props.queryData != undefined) {
+					props.queryData.forEach((value, key) => {
+						if (parentSection.length > 0) parentSection += "&";
+						parentSection += key + "=" + value;
+					});
+				}
+
 				fetch(
 					props.options.read +
 						"?page=" +
@@ -159,14 +163,14 @@
 						orderDirection.value +
 						"&filter=" +
 						props.filter +
-						(props.parent != undefined ? "&parentId=" + props.parent : "")
+						(parentSection != undefined ? "&" + parentSection : "")
 				)
 					.then((response) => response.json())
 					.then((data) => {
 						records.value.splice(0);
 						data.records.forEach((x: GridRow) => records.value.push(x));
 						total.value = data.count;
-                        emit("updateTotal", total.value);
+						emit("updateTotal", total.value);
 					});
 			};
 			onMounted(loadPage);
@@ -179,7 +183,7 @@
 				await loadPage();
 			};
 
-            watch(props, () => {
+			watch(props, () => {
 				loadPage();
 			});
 
@@ -188,7 +192,7 @@
 			};
 
 			const deleteRecord = (item: GridRow) => {
-                emit("delete", item.id, item[props.options.deleteColumn]);
+				emit("delete", item.id, item[props.options.deleteColumn]);
 			};
 
 			const up = (item: GridRow, column: GridColumnOrder) => {
@@ -221,23 +225,21 @@
 				let anyChecked = false;
 
 				if (props.options.selectionMode == null || props.options.selectionMode == GridSelectionMode.single) {
-					for (const key in seletedRows.value) {
+					for (const key in selectedRows.value) {
 						if (parseInt(key) == record.id) {
-							if (seletedRows.value[key] == "true") {
+							if (selectedRows.value[key] == "true") {
 								anyChecked = true;
 								emit("selectionChanged", record.id);
 							}
 							continue;
 						}
-						seletedRows.value[key] = false;
+						selectedRows.value[key] = false;
 					}
-				}
-				else if(props.options.selectionMode == GridSelectionMode.multiple)
-				{
-					let selectedIds: number[] = []; 
-					for (const key in seletedRows.value) {
+				} else if (props.options.selectionMode == GridSelectionMode.multiple) {
+					let selectedIds: number[] = [];
+					for (const key in selectedRows.value) {
 						const numberKey = parseInt(key);
-						if (seletedRows.value[key] == "true") {
+						if (selectedRows.value[key] == "true") {
 							selectedIds.push(numberKey);
 							anyChecked = true;
 						}
@@ -259,8 +261,8 @@
 				down,
 				columnHeaderClass,
 				hasActions,
-				seletedRows,
-				selectableChanged
+				selectedRows,
+				selectableChanged,
 			};
 		},
 	});

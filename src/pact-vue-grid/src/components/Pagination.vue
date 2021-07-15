@@ -1,5 +1,5 @@
 <template>
-	<div class="col-12" v-if="pages > 1">
+	<div class="col-12 col-md-6" v-if="pages > 1">
 		<ul class="pagination pagination-sm handy mb-0">
 			<li class="page-item" v-if="page > 0">
 				<button class="page-link" v-on:click="adjustPage(-1)">
@@ -39,10 +39,10 @@
 				type: Number,
 				required: true,
 			},
-            pageSize: {
-                type: Number,
-                required: true,
-            }
+			pageSize: {
+				type: Number,
+				required: true,
+			},
 		},
 		emits: ["pageChanged"],
 		setup(props, { emit }) {
@@ -57,15 +57,14 @@
 				page.value = page.value + value;
 			};
 
-            watch(props, () => {
+			watch(props, () => {
 				pages.value = Math.ceil(props.total / props.pageSize);
-                if(page.value < 0 || page.value > pages.value - 1)
-                    page.value = 0;
+				if (page.value < 0 || page.value > pages.value - 1) page.value = 0;
 			});
 
-            watch(page, ()=> {
-                emit("pageChanged", page.value);
-            })
+			watch(page, () => {
+				emit("pageChanged", page.value);
+			});
 
 			return {
 				page,

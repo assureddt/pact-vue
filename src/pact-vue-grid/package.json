@@ -1,69 +1,69 @@
 {
-  "name": "@assureddt/pact-vue-grid",
-  "version": "0.0.39-beta",
-  "description": "Vue 3 grid system",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/assureddt/pact-vue/"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.35",
-    "@fortawesome/vue-fontawesome": "3.0.0-3",
-    "core-js": "3.13.1",
-    "marked": "2.0.7",
-    "vue": "3.0.11"
-  },
-  "devDependencies": {
-    "@types/marked": "2.0.3",
-    "@typescript-eslint/eslint-plugin": "4.26.0",
-    "@typescript-eslint/parser": "4.26.0",
-    "@vue/cli-plugin-babel": "4.5.13",
-    "@vue/cli-plugin-eslint": "5.0.0-alpha.8",
-    "@vue/cli-plugin-typescript": "4.5.13",
-    "@vue/cli-service": "4.5.13",
-    "@vue/compiler-sfc": "3.0.11",
-    "@vue/eslint-config-typescript": "7.0.0",
-    "eslint": "7.27.0",
-    "eslint-plugin-vue": "^7.10.0",
-    "typescript": "4.3.2",
-    "webpack": "4.44.2"
-  },
-  "main": "dist/pact-vue-grid.common.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build-debug": "vue-cli-service build --dest dist --mode development --target lib src/index.ts && tsc --emitDeclarationOnly",
-    "build": "vue-cli-service build --dest dist --mode production --target lib src/index.ts && tsc --emitDeclarationOnly",
-    "lint": "vue-cli-service lint"
-  },
-  "keywords": [
-    "vue",
-    "bootstrap",
-    "grid"
-  ],
-  "author": "assureddt",
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "@vue/typescript/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2020
-    },
-    "rules": {
-      "@typescript-eslint/ban-ts-ignore": "off"
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+	"name": "@assureddt/pact-vue-grid",
+	"version": "0.0.40-beta",
+	"description": "Vue 3 grid system",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/assureddt/pact-vue/"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "1.2.35",
+		"@fortawesome/vue-fontawesome": "3.0.0-3",
+		"core-js": "3.13.1",
+		"marked": "2.0.7",
+		"vue": "3.0.11"
+	},
+	"devDependencies": {
+		"@types/marked": "2.0.3",
+		"@typescript-eslint/eslint-plugin": "4.26.0",
+		"@typescript-eslint/parser": "4.26.0",
+		"@vue/cli-plugin-babel": "4.5.13",
+		"@vue/cli-plugin-eslint": "5.0.0-alpha.8",
+		"@vue/cli-plugin-typescript": "4.5.13",
+		"@vue/cli-service": "4.5.13",
+		"@vue/compiler-sfc": "3.0.11",
+		"@vue/eslint-config-typescript": "7.0.0",
+		"eslint": "7.27.0",
+		"eslint-plugin-vue": "^7.10.0",
+		"typescript": "4.3.2",
+		"webpack": "4.44.2"
+	},
+	"main": "dist/pact-vue-grid.common.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build-debug": "vue-cli-service build --dest dist --mode development --target lib src/index.ts && tsc --emitDeclarationOnly",
+		"build": "vue-cli-service build --dest dist --mode production --target lib src/index.ts && tsc --emitDeclarationOnly",
+		"lint": "vue-cli-service lint"
+	},
+	"keywords": [
+		"vue",
+		"bootstrap",
+		"grid"
+	],
+	"author": "assureddt",
+	"eslintConfig": {
+		"root": true,
+		"env": {
+			"node": true
+		},
+		"extends": [
+			"plugin:vue/vue3-essential",
+			"eslint:recommended",
+			"@vue/typescript/recommended"
+		],
+		"parserOptions": {
+			"ecmaVersion": 2020
+		},
+		"rules": {
+			"@typescript-eslint/ban-ts-ignore": "off"
+		}
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	]
 }

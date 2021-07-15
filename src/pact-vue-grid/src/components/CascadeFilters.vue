@@ -1,8 +1,8 @@
 <template v-if="filters != undefined">
-	<div class="col-12" v-for="filter in filters" :key="filter.name">
+	<div class="col-12" :class="filter.width" v-for="filter in filters" :key="filter.name">
 		<div class="input-group input-group-sm">
 			<label class="input-group-text" :for="getFilterId(filter)">{{ filter.label }}</label>
-			<select class="form-select select-width" v-model="fitlerValues[filter.name]" @change="selectChanged(filter)" :id="getFilterId(filter)">
+			<select class="form-select select-width" v-model="filterValues[filter.name]" @change="selectChanged(filter)" :id="getFilterId(filter)">
 				<option v-for="filterData in filterDataMap.get(filter.name)" :key="filterData.id" :value="filterData.id">{{
 					filterData.display
 				}}</option>
@@ -13,12 +13,12 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, watch, reactive } from "vue";
-	import { GridCascadeFilter, SelectOption } from "../models";
+	import { GridFilter, SelectOption, QueryData } from "../models";
 
 	export default defineComponent({
 		props: {
 			filters: {
-				type: Array as PropType<GridCascadeFilter[]>,
+				type: Array as PropType<GridFilter[]>,
 				required: false,
 			},
 		},
@@ -27,97 +27,109 @@
 			if (props.filters == undefined) return {};
 
 			const filterDataMap = reactive(new Map<string, SelectOption[]>());
-			const fitlerValues = reactive<FilterValues>({});
-			const lastValueSent = ref<number | undefined>(undefined);
+			const filterValues = reactive<FilterValues>({});
+			const lastValueSent = ref<undefined | QueryData>(undefined);
 
-			const getFilterData = async (filter: GridCascadeFilter, lastFilter: GridCascadeFilter | undefined) => {
+			const getFilterData = async (filter: GridFilter, lastFilter: GridFilter | undefined) => {
 				let url = filter.url;
 
-				if (lastFilter != undefined) url += "?parentId=" + fitlerValues[lastFilter.name];
+				if (lastFilter != undefined) url += "?parentId=" + filterValues[lastFilter.name];
 
 				fetch(url)
 					.then((response) => response.json())
 					.then((data: SelectOption[]) => {
 						filterDataMap.set(filter.name, data);
-						fitlerValues[filter.name] = getCachedSeletedItem(filter, data);
+						filterValues[filter.name] = getCachedSelectedItem(filter, data);
 						loadNextFilter(filter);
 					});
 			};
 
-			function loadNextFilter(lastFilter: GridCascadeFilter | undefined) {
+			function loadNextFilter(lastFilter: GridFilter | undefined) {
 				if (props.filters == undefined) return;
-				const filter = props.filters.find((x) => x.parent == lastFilter?.name);
-				if (filter != undefined) getFilterData(filter, lastFilter);
+
+				props.filters.forEach((x) => {
+					if (x.kind == "child") {
+						if (lastFilter?.name == x.parent) getFilterData(x, lastFilter);
+					}
+				});
 			}
 
-			loadNextFilter(undefined);
-
-			watch(fitlerValues, () => {
-				if (props.filters == undefined) return;
-
-				const lastFilter = props.filters.find((x) => x.isParentId);
-
-				if (lastFilter == undefined) return;
-
-				const currentValue = fitlerValues[lastFilter?.name];
-
-				if (lastValueSent.value == undefined || lastValueSent.value != currentValue) {
-
-					emit("changedFilter", currentValue, getCurrentTextDisplay());
-					lastValueSent.value = currentValue;
+			props.filters.forEach((x) => {
+				if (x.kind !== "child" || !x.parent) {
+					getFilterData(x, undefined);
 				}
 			});
 
-			const selectChanged = (filter: GridCascadeFilter) => {
+			watch(filterValues, () => {
+				if (props.filters == undefined) return;
+
+				const output = new QueryData();
+				let gotAllValues = true;
+				props.filters.forEach((x) => {
+					if (x.send) {
+						const value = filterValues[x.name];
+						gotAllValues = value != undefined;
+						output.set(x.name, filterValues[x.name]);
+					}
+				});
+				if (!gotAllValues) return;
+				if (lastValueSent.value == undefined || lastValueSent.value != output) {
+					emit("changedFilter", output, getCurrentTextDisplay());
+					lastValueSent.value = output;
+				}
+			});
+
+			const selectChanged = (changedFilter: GridFilter) => {
 				if (props.filters == undefined) return {};
 
-				sessionStorage.setItem(cacheKey(filter.name), fitlerValues[filter.name].toString());
+				sessionStorage.setItem(cacheKey(changedFilter.name), filterValues[changedFilter.name].toString());
 
-				if (!filter.isParentId) loadNextFilter(filter);
+				props.filters.forEach((x) => {
+					if (x.kind == "child") {
+						if (changedFilter?.name == x.parent) getFilterData(x, changedFilter);
+					}
+				});
 			};
 
-			const getCachedSeletedItem = (filter: GridCascadeFilter, data: SelectOption[]) : number => {
+			const getCachedSelectedItem = (filter: GridFilter, data: SelectOption[]): number => {
 				let rawData = sessionStorage.getItem(cacheKey(filter.name));
-				if(rawData != null)
-				{
+				if (rawData != null) {
 					var value = parseInt(rawData);
-					if(data.find((x) => x.id == value) != undefined)
-						return value;
+					if (data.find((x) => x.id == value) != undefined) return value;
 				}
 				sessionStorage.setItem(cacheKey(filter.name), data[0].id.toString());
 				return data[0].id;
-			}
+			};
 
-			const cacheKey = (key: string) :string => {
+			const cacheKey = (key: string): string => {
 				return "crud-" + key;
-			}
+			};
 
-			const getFilterId = (filter: GridCascadeFilter) : string => {
+			const getFilterId = (filter: GridFilter): string => {
 				return "filter-" + filter.name;
-			}
+			};
 
 			const getCurrentTextDisplay = () => {
 				if (props.filters == undefined || filterDataMap == undefined) return;
 				let output = "";
 				for (let filter of props.filters) {
 					var options = filterDataMap.get(filter.name);
-					if(options == undefined) continue;
-					var values = options.find((x) => x.id == fitlerValues[filter.name]);
-					if(values == undefined) continue;
+					if (options == undefined) continue;
+					var values = options.find((x) => x.id == filterValues[filter.name]);
+					if (values == undefined) continue;
 
-					if(output.length > 0)
-						output = output + " - ";
+					if (output.length > 0) output = output + " - ";
 					output += values.display;
 				}
 				return output;
-			}
+			};
 
 			return {
 				filterDataMap,
 				getFilterData,
-				fitlerValues,
+				filterValues,
 				selectChanged,
-				getFilterId
+				getFilterId,
 			};
 		},
 	});

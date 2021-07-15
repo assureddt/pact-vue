@@ -5,9 +5,9 @@
 				<font-awesome-icon icon="plus" class="text-white" fixed-width></font-awesome-icon>
 			</button>
 		</div>
-		<cascade-filters :filters="options.filters" @changed-filter="cascadeFilterChanged"></cascade-filters>
+		<cascade-filters :filters="options.filters" @changed-filter="filterChanged"></cascade-filters>
 		<pagination :total="total" :page-size="options.pageSize" @page-changed="paginationPageChanged"></pagination>
-		<div class="col-12 ms-auto">
+		<div class="col-12 col-md-6 ms-auto">
 			<div class="input-group input-group-sm">
 				<label class="input-group-text" for="search-box">Search</label>
 				<input type="text" class="form-control form-control-sm search-width" placeholder="Search..." v-model="filter" id="search-box" />
@@ -33,24 +33,25 @@
 	</div>
 	<div class="row">
 		<div class="col">
-			<grid-component 
-			:options="options" 
-			:columns="columns" 
-			:parent="computedParent" 
-			:filter="filter"
-			:page="page"
-			@update-total="updateTotal"
-			@edit="gridEdit"
-			@delete="gridDelete"
-			@selection-changed="selectionChangedPassthrough"
-			:key="refreshCount"></grid-component>
+			<grid-component
+				:options="options"
+				:columns="columns"
+				:query-data="computedQueryData"
+				:filter="filter"
+				:page="page"
+				@update-total="updateTotal"
+				@edit="gridEdit"
+				@delete="gridDelete"
+				@selection-changed="selectionChangedPassthrough"
+				:key="refreshCount"
+			></grid-component>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, watch } from "vue";
-	import { GridOptions, GridColumn, GridColumnOrder } from "../models";
+	import { GridOptions, GridColumn, GridColumnOrder, QueryData } from "../models";
 	import CascadeFilters from "./CascadeFilters.vue";
 	import Pagination from "./Pagination.vue";
 	import Grid from "./Grid.vue";
@@ -65,48 +66,44 @@
 				type: Array as PropType<(GridColumn | GridColumnOrder)[]>,
 				required: true,
 			},
-			parent: {
-				type: Number,
+			queryData: {
+				type: Object as PropType<QueryData>,
 				required: false,
 			},
 		},
-		emits: ["changeMode", "selectionChanged", "refreshed"],
+		emits: ["changeMode", "selectionChanged", "refreshed", "filterChanged"],
 		components: {
 			"cascade-filters": CascadeFilters,
-			"pagination": Pagination,
-			"grid-component": Grid
+			pagination: Pagination,
+			"grid-component": Grid,
 		},
 		setup(props, { emit }) {
 			const page = ref(0);
 			const total = ref(0);
 			const filter = ref("");
-			const computedParent = ref<number | undefined>();
+			const computedQueryData = ref<undefined | QueryData>(props.options.queryData ?? props.queryData ?? undefined);
 			const referenceTitle = ref("");
 			const deleting = ref<number | undefined>(undefined);
 			const deletingDisplay = ref<string | undefined>(undefined);
 			const refreshCount = ref(0);
-			
-			if (props.options.parent != undefined) computedParent.value = props.options.parent.valueOf();
-
-			if (props.parent != undefined) computedParent.value = props.parent.valueOf();
 
 			const addMode = () => {
-				emit("changeMode", "add", undefined, computedParent.value, referenceTitle.value);
+				emit("changeMode", "add", undefined, computedQueryData.value, referenceTitle.value);
 			};
 
 			const updateTotal = (count: number) => {
 				total.value = count;
 				emit("refreshed");
-			}
+			};
 
 			const gridEdit = (id: number) => {
 				emit("changeMode", "edit", id, undefined, referenceTitle.value);
-			}
+			};
 
 			const gridDelete = (id: number, itemDisplay: string) => {
 				deletingDisplay.value = itemDisplay;
 				deleting.value = id;
-			}
+			};
 
 			const cancelDelete = () => {
 				deleting.value = undefined;
@@ -114,18 +111,19 @@
 			};
 
 			const confirmDelete = () => {
-				if(deleting.value == undefined) return;
+				if (deleting.value == undefined) return;
 				fetch(props.options.delete + "?id=" + deleting.value)
 					.then((response) => response.json())
 					.then(() => {
 						cancelDelete();
-						refesh();
+						refresh();
 					});
 			};
 
-			const cascadeFilterChanged = (parentId: number, display: string) => {
-				computedParent.value = parentId;
+			const filterChanged = (filter: QueryData, display: string) => {
+				computedQueryData.value = filter;
 				referenceTitle.value = display;
+				emit("filterChanged", filter);
 			};
 
 			const selectionChangedPassthrough = (ids: number[] | undefined) => {
@@ -133,16 +131,16 @@
 			};
 
 			watch(props, () => {
-				computedParent.value = props.parent;
+				computedQueryData.value = props.queryData;
 			});
 
 			const paginationPageChanged = (pageIndex: number) => {
 				page.value = pageIndex;
 			};
 
-			const refesh = () => {
+			const refresh = () => {
 				refreshCount.value = refreshCount.value + 1;
-			}
+			};
 
 			return {
 				updateTotal,
@@ -155,13 +153,13 @@
 				cancelDelete,
 				confirmDelete,
 				deleting,
-				cascadeFilterChanged,
+				filterChanged,
 				selectionChangedPassthrough,
 				paginationPageChanged,
-				computedParent,
+				computedQueryData,
 				refreshCount,
 				referenceTitle,
-				deletingDisplay
+				deletingDisplay,
 			};
 		},
 	});
