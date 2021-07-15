@@ -9,18 +9,26 @@
 			<div class="row">
 				<div class="col">
 					<page-grid v-if="mode == 'grid'" :options="gridOptions" :columns="gridColumns" @change-mode="changeMode"></page-grid>
-					<page-edit v-if="mode == 'add' || mode == 'edit'" :options="editOptions" :fields="editFields" :mode="mode" @change-mode="changeMode" :editing="editing" :parent="parent" :sub-page-title="editAddPageTitle"></page-edit>
+					<page-edit
+						v-if="mode == 'add' || mode == 'edit'"
+						:options="editOptions"
+						:fields="editFields"
+						:mode="mode"
+						@change-mode="changeMode"
+						:editing="editing"
+						:query-data="queryData"
+						:sub-page-title="editAddPageTitle"
+					></page-edit>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 </template>
 
 <script lang="ts">
-	import { defineComponent, PropType, ref} from "vue";
-	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions} from "../models";
-    import Gird from "./GridPage.vue";
+	import { defineComponent, PropType, ref } from "vue";
+	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions, QueryData } from "../models";
+	import Gird from "./GridPage.vue";
 	import Editor from "./Editor.vue";
 
 	export default defineComponent({
@@ -44,31 +52,31 @@
 			pageTitle: {
 				type: String,
 				required: false,
-			}
+			},
 		},
-        components: {
-            "page-grid": Gird,
-			"page-edit": Editor
-        },
+		components: {
+			"page-grid": Gird,
+			"page-edit": Editor,
+		},
 		setup() {
 			const mode = ref("grid");
 			const editing = ref<number | undefined>(undefined);
-			const parent = ref<number | undefined>(undefined);
+			const queryData = ref<QueryData | undefined>(undefined);
 			const editAddPageTitle = ref<string | undefined>(undefined);
 
-			const changeMode = (changeToMode: string, id?: number, parentId?: number, subPageTitle?: string) => {
+			const changeMode = (changeToMode: string, id?: number, parentId?: QueryData, subPageTitle?: string) => {
 				editAddPageTitle.value = subPageTitle;
 				editing.value = id;
-				parent.value = parentId;
+				queryData.value = parentId;
 				mode.value = changeToMode;
-			}
+			};
 
 			return {
 				mode,
 				changeMode,
 				editing,
-				parent,
-				editAddPageTitle
+				queryData,
+				editAddPageTitle,
 			};
 		},
 	});

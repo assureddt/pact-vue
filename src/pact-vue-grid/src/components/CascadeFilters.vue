@@ -2,7 +2,7 @@
 	<div class="col-12" :class="filter.width" v-for="filter in filters" :key="filter.name">
 		<div class="input-group input-group-sm">
 			<label class="input-group-text" :for="getFilterId(filter)">{{ filter.label }}</label>
-			<select class="form-select select-width" v-model="filterValues[filter.name]" @change="selectChanged(filter)" :id="getFilterId(filter)">
+			<select class="form-select" v-model="filterValues[filter.name]" @change="selectChanged(filter)" :id="getFilterId(filter)">
 				<option v-for="filterData in filterDataMap.get(filter.name)" :key="filterData.id" :value="filterData.id">{{
 					filterData.display
 				}}</option>
@@ -139,8 +139,4 @@
 	}
 </script>
 
-<style scoped>
-	.select-width {
-		width: 250px;
-	}
-</style>
+<style scoped></style>

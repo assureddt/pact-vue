@@ -7,10 +7,10 @@
 		</div>
 		<cascade-filters :filters="options.filters" @changed-filter="filterChanged"></cascade-filters>
 		<pagination :total="total" :page-size="options.pageSize" @page-changed="paginationPageChanged"></pagination>
-		<div class="col-12 col-md-6 ms-auto">
+		<div class="col-12 col-md-4 col-lg-3 col-xl-3 ms-auto">
 			<div class="input-group input-group-sm">
 				<label class="input-group-text" for="search-box">Search</label>
-				<input type="text" class="form-control form-control-sm search-width" placeholder="Search..." v-model="filter" id="search-box" />
+				<input type="text" class="form-control form-control-sm" placeholder="Search..." v-model="filter" id="search-box" />
 			</div>
 		</div>
 	</div>
@@ -171,9 +171,6 @@
 	}
 	.order-buttons-wdith {
 		width: 79px;
-	}
-	.search-width {
-		min-width: 250px;
 	}
 	.select-width {
 		width: 20px;
