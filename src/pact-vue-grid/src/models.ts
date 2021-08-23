@@ -57,6 +57,7 @@ export interface EditField {
 	type: string;
 	pattern?: string;
 	customComponent?: string;
+	columnClass?: string;
 }
 
 export interface EditFieldSelect extends EditField {

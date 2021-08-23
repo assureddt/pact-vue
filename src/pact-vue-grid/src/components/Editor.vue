@@ -14,6 +14,7 @@
 			</div>
 			<div class="row" v-if="loaded">
 				<template v-for="field in fields" :key="field.name">
+					<div class="mb-3" :class="workoutColumnClass(field)">
 						<label :for="field.name" class="form-label">{{ field.display }}</label>
 						<component
 							v-if="field.customComponent != null"
@@ -223,6 +224,9 @@
 				return response.json();
 			}
 
+			const workoutColumnClass = (field: EditField) => {
+				if (field.columnClass != undefined) return field.columnClass;
+				return columnClass.value;
 			};
 
 			return {
@@ -234,6 +238,7 @@
 				selectOptions,
 				columnClass,
 				loaded,
+				workoutColumnClass,
 			};
 		},
 	});
