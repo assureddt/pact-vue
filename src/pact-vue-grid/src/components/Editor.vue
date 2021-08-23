@@ -14,7 +14,6 @@
 			</div>
 			<div class="row" v-if="loaded">
 				<template v-for="field in fields" :key="field.name">
-					<div class="mb-3" :class="columnClass" v-if="field.type != 'markdown'">
 						<label :for="field.name" class="form-label">{{ field.display }}</label>
 						<component
 							v-if="field.customComponent != null"
@@ -81,27 +80,6 @@
 							:pattern="field.pattern"
 						/>
 					</div>
-					<div v-if="field.type == 'markdown'" class="col-12 mb-3">
-						<div class="row">
-							<div class="col-12">
-								<label :for="field.name" class="form-label">{{ field.display }}</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 col-lg-6">
-								<textarea
-									:id="field.name"
-									class="form-control"
-									:placeholder="field.placeholder"
-									:required="field.required"
-									:pattern="field.pattern"
-									v-model="record[field.name]"
-									rows="10"
-								/>
-							</div>
-							<div class="col-12 col-lg-6 border border-primary my-3 my-lg-0" v-html="convertToHtml(record[field.name])"></div>
-						</div>
-					</div>
 				</template>
 			</div>
 			<div class="row" v-if="serverMessage != undefined && serverMessage.length > 0">
@@ -143,7 +121,6 @@
 		EditorValues,
 		QueryData,
 	} from "../models";
-	import * as marked from "marked";
 
 	export default defineComponent({
 		props: {
@@ -246,9 +223,6 @@
 				return response.json();
 			}
 
-			const convertToHtml = (value: string) => {
-				if (value == null || value == undefined) return;
-				return marked.parse(value);
 			};
 
 			return {
@@ -259,7 +233,6 @@
 				gridMode,
 				selectOptions,
 				columnClass,
-				convertToHtml,
 				loaded,
 			};
 		},

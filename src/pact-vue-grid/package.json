@@ -13,11 +13,9 @@
 		"@fortawesome/fontawesome-svg-core": "1.2.35",
 		"@fortawesome/vue-fontawesome": "3.0.0-3",
 		"core-js": "3.13.1",
-		"marked": "2.0.7",
 		"vue": "3.0.11"
 	},
 	"devDependencies": {
-		"@types/marked": "2.0.3",
 		"@typescript-eslint/eslint-plugin": "4.26.0",
 		"@typescript-eslint/parser": "4.26.0",
 		"@vue/cli-plugin-babel": "4.5.13",
