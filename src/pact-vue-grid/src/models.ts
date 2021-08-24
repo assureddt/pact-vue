@@ -90,6 +90,7 @@ export interface GridBaseFilter {
 	name: string;
 	send: true | undefined;
 	width: string | "col-12";
+	defaultValue?: number;
 }
 
 export interface GridBasicFilter extends GridBaseFilter {

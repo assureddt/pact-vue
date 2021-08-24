@@ -97,6 +97,12 @@
 					var value = parseInt(rawData);
 					if (data.find((x) => x.id == value) != undefined) return value;
 				}
+				if (filter.defaultValue != undefined) {
+					if (data.find((x) => x.id == filter.defaultValue) != undefined) {
+						sessionStorage.setItem(cacheKey(filter.name), filter.defaultValue.toString());
+						return filter.defaultValue;
+					}
+				}
 				sessionStorage.setItem(cacheKey(filter.name), data[0].id.toString());
 				return data[0].id;
 			};
