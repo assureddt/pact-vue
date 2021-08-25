@@ -5,12 +5,13 @@
 				<font-awesome-icon icon="plus" class="text-white" fixed-width></font-awesome-icon>
 			</button>
 		</div>
-		<cascade-filters :filters="options.filters" @changed-filter="filterChanged"></cascade-filters>
-		<pagination :total="total" :page-size="options.pageSize" @page-changed="paginationPageChanged"></pagination>
+		<cascade-filters :filters="options.filters" @changed-filter="filterChanged" :reset="resetCascadeFilters"></cascade-filters>
+		<pagination :total="total" :page-size="options.pageSize" @page-changed="paginationPageChanged" :reset="resetCascadeFilters"></pagination>
 		<div class="col-12 col-md-4 col-lg-3 col-xl-3 ms-auto">
 			<div class="input-group input-group-sm">
 				<label class="input-group-text" for="search-box">Search</label>
 				<input type="text" class="form-control form-control-sm" placeholder="Search..." v-model="filter" id="search-box" />
+				<button class="btn btn-outline-secondary" type="button" @click="reset" v-if="options.showReset">Reset</button>
 			</div>
 		</div>
 	</div>
@@ -86,6 +87,7 @@
 			const deleting = ref<number | undefined>(undefined);
 			const deletingDisplay = ref<string | undefined>(undefined);
 			const refreshCount = ref(0);
+			const resetCascadeFilters = ref(0);
 
 			const addMode = () => {
 				emit("changeMode", "add", undefined, computedQueryData.value, referenceTitle.value);
@@ -142,6 +144,12 @@
 				refreshCount.value = refreshCount.value + 1;
 			};
 
+			const reset = () => {
+				filter.value = "";
+				resetCascadeFilters.value += 1;
+				page.value = 0;
+			};
+
 			return {
 				updateTotal,
 				gridEdit,
@@ -160,6 +168,8 @@
 				refreshCount,
 				referenceTitle,
 				deletingDisplay,
+				reset,
+				resetCascadeFilters,
 			};
 		},
 	});

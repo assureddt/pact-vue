@@ -43,6 +43,11 @@
 				type: Number,
 				required: true,
 			},
+			reset: {
+				type: Number,
+				required: true,
+				default: 0,
+			},
 		},
 		emits: ["pageChanged"],
 		setup(props, { emit }) {
@@ -65,6 +70,13 @@
 			watch(page, () => {
 				emit("pageChanged", page.value);
 			});
+
+			watch(
+				() => props.reset,
+				() => {
+					page.value = 0;
+				}
+			);
 
 			return {
 				page,

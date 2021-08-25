@@ -21,6 +21,11 @@
 				type: Array as PropType<GridFilter[]>,
 				required: false,
 			},
+			reset: {
+				type: Number,
+				required: true,
+				default: 0,
+			},
 		},
 		emits: ["changedFilter"],
 		setup(props, { emit }) {
@@ -129,6 +134,18 @@
 				}
 				return output;
 			};
+
+			watch(
+				() => props.reset,
+				() => {
+					props.filters?.forEach((filter) => {
+						var options = filterDataMap.get(filter.name);
+						if (options == null) return;
+						sessionStorage.removeItem(cacheKey(filter.name));
+						filterValues[filter.name] = getCachedSelectedItem(filter, options);
+					});
+				}
+			);
 
 			return {
 				filterDataMap,

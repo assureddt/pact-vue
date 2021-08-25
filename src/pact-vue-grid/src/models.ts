@@ -13,6 +13,7 @@ export interface GridOptions {
 	queryData?: QueryData;
 	selectable?: true;
 	selectionMode?: GridSelectionMode;
+	showReset?: boolean;
 }
 
 export interface GridOptionsOrder {
