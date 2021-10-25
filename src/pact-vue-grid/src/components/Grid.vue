@@ -71,7 +71,9 @@
 								:class="customAction.buttonClass"
 								v-on:click="customAction.action(record)"
 								:aria-label="customAction.label"
+								:title="customAction.label"
 								:disabled="customAction.shouldDisable != null && customAction.shouldDisable(record)"
+								:hidden="customAction.shouldHide != null && customAction.shouldHide(record)"
 							>
 								<font-awesome-icon :icon="['fas', customAction.fontAwesomeIcon]" class="text-white" fixed-width></font-awesome-icon>
 							</button>
