@@ -207,6 +207,8 @@
 
 			const columnHeaderClass = (column: GridColumnOrder) => {
 				return {
+					"order-up": column.name == orderColumnName.value && orderDirection.value == GridOrderDirection.ascending,
+					"order-down": column.name == orderColumnName.value && orderDirection.value == GridOrderDirection.descending,
 					"order-buttons-wdith": column.type == "order",
 				};
 			};
@@ -278,5 +280,31 @@
 	}
 	.select-width {
 		width: 20px;
+	}
+
+	table > thead .handy {
+		position: relative;
+	}
+
+	table > thead .handy:before, table > thead .order-up:before, table > thead .order-down:before {
+		right: 1em;
+		content: "↑";
+	}
+
+	table > thead .handy:after, table > thead .order-up:after, table > thead .order-down:after {
+		right: 0.5em;
+		content: "↓";
+	}
+
+	table > thead .handy:before, table > thead .handy:after, table > thead .order-up:before, table > thead .order-up:after, table > thead .order-down:before, table > thead .order-down:after {
+		position: absolute;
+		top: 0.5em;
+		display: block;
+		opacity: 0.3;
+		font-size: 0.8em;
+	}
+
+	table > thead .order-up:before, table > thead .order-down:after {
+		opacity: 1;
 	}
 </style>
