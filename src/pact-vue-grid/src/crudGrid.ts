@@ -1,5 +1,5 @@
 import { createApp, ComponentPublicInstance, App } from "vue";
-import Page from "./components/Page.vue";
+import Page from "./components/PactPage.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { CRUDGridOptions } from "./models";
 
