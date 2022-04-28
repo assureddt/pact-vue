@@ -54,8 +54,8 @@
 	import { defineComponent, PropType, ref, watch } from "vue";
 	import { GridOptions, GridColumn, GridColumnOrder, QueryData } from "../models";
 	import CascadeFilters from "./CascadeFilters.vue";
-	import Pagination from "./Pagination.vue";
-	import Grid from "./Grid.vue";
+	import Pagination from "./GridPagination.vue";
+	import Grid from "./PactGrid.vue";
 
 	export default defineComponent({
 		props: {

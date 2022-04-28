@@ -28,8 +28,8 @@
 <script lang="ts">
 	import { defineComponent, PropType, ref } from "vue";
 	import { GridOptions, GridColumn, EditField, EditFieldSelect, EditFieldNumber, EditFieldSelectBoolean, EditOptions, QueryData } from "../models";
-	import Gird from "./GridPage.vue";
-	import Editor from "./Editor.vue";
+	import Grid from "./GridPage.vue";
+	import Editor from "./GridEditor.vue";
 
 	export default defineComponent({
 		props: {
@@ -55,7 +55,7 @@
 			},
 		},
 		components: {
-			"page-grid": Gird,
+			"page-grid": Grid,
 			"page-edit": Editor,
 		},
 		setup() {
