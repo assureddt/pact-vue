@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import dts from 'vite-plugin-dts'
 
 const path = require("path");
 
@@ -11,7 +12,7 @@ export default defineConfig({
             fileName: (format) => `pact-vue-grid.${format}.js`
         }
     },
-    plugins: [vue()],
+    plugins: [vue(), dts()],
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src")
