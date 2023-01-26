@@ -232,7 +232,7 @@
 						selectedRows.value[key] = false;
 					}
 				} else if (props.options.selectionMode == GridSelectionMode.multiple) {
-					let selectedIds: number[] = [];
+					const selectedIds: number[] = [];
 					for (const key in selectedRows.value) {
 						const numberKey = parseInt(key);
 						if (selectedRows.value[key] == "true") {

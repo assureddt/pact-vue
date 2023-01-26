@@ -97,9 +97,9 @@
 			};
 
 			const getCachedSelectedItem = (filter: GridFilter, data: SelectOption[]): number => {
-				let rawData = sessionStorage.getItem(cacheKey(filter.name));
+				const rawData = sessionStorage.getItem(cacheKey(filter.name));
 				if (rawData != null) {
-					var value = parseInt(rawData);
+					const value = parseInt(rawData);
 					if (data.find((x) => x.id == value) != undefined) return value;
 				}
 				if (filter.defaultValue != undefined) {
@@ -123,10 +123,10 @@
 			const getCurrentTextDisplay = () => {
 				if (props.filters == undefined || filterDataMap == undefined) return;
 				let output = "";
-				for (let filter of props.filters) {
-					var options = filterDataMap.get(filter.name);
+				for (const filter of props.filters) {
+					const options = filterDataMap.get(filter.name);
 					if (options == undefined) continue;
-					var values = options.find((x) => x.id == filterValues[filter.name]);
+					const values = options.find((x) => x.id == filterValues[filter.name]);
 					if (values == undefined) continue;
 
 					if (output.length > 0) output = output + " - ";
@@ -139,7 +139,7 @@
 				() => props.reset,
 				() => {
 					props.filters?.forEach((filter) => {
-						var options = filterDataMap.get(filter.name);
+						const options = filterDataMap.get(filter.name);
 						if (options == null) return;
 						sessionStorage.removeItem(cacheKey(filter.name));
 						filterValues[filter.name] = getCachedSelectedItem(filter, options);
