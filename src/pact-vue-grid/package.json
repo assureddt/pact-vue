@@ -1,6 +1,6 @@
 {
 	"name": "@assureddt/pact-vue-grid",
-	"version": "0.1.1-beta.3",
+	"version": "0.1.1-beta.4",
 	"description": "Vue 3 grid system",
 	"repository": {
 		"type": "git",
@@ -38,7 +38,7 @@
 			"import": "./dist/pact-vue-grid.es.js",
 			"require": "./dist/pact-vue-grid.umd.js"
 		},
-		"./pact-vue-grid.css": {
+		"./dist/pact-vue-grid.css": {
 			"import": "./dist/style.css",
 			"require": "./dist/style.css"
 		}
