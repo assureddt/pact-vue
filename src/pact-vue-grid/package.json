@@ -23,9 +23,10 @@
 		"eslint-plugin-vue": "^9.9.0",
 		"typescript": "4.9.4",
 		"vite": "^4.0.4",
+		"sass": "1.57.1"
+	},
+	"optionalDependencies": {
 		"bootstrap": "5.2.3",
-		"sass": "1.57.1",
-		"@fortawesome/fontawesome-svg-core": "6.2.1",
 		"@fortawesome/pro-solid-svg-icons": "6.2.1"
 	},
 	"files": ["dist"],
