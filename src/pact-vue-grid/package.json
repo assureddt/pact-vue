@@ -1,6 +1,6 @@
 {
 	"name": "@assureddt/pact-vue-grid",
-	"version": "0.1.1-beta.4",
+	"version": "0.1.1-beta.5",
 	"description": "Vue 3 grid system",
 	"repository": {
 		"type": "git",
@@ -28,7 +28,8 @@
 	},
 	"optionalDependencies": {
 		"bootstrap": "5.2.3",
-		"@fortawesome/pro-solid-svg-icons": "6.2.1"
+		"@fortawesome/pro-solid-svg-icons": "6.2.1",
+		"@toast-ui/editor": "3.2.1"
 	},
 	"files": ["dist"],
 	"main": "dist/pact-vue-grid.umd.js",

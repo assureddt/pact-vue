@@ -1,5 +1,6 @@
 import "bootstrap";
 import { CRUDGrid, GridOrderDirection } from "./main";
+import MarkdownEditor from "./components/TuiWrapper.vue";
 
 import "bootstrap/scss/bootstrap.scss";
 
@@ -45,7 +46,7 @@ new CRUDGrid("#app", {
 	editOptions: {
 		add: "/add",
 		edit: "/edit",
-		grabData: "/data",
+		grabData: "/data.json",
 		editTitle: "Edit",
 		addTitle: "Add"
 	},
@@ -61,9 +62,14 @@ new CRUDGrid("#app", {
 			name: "description",
 			display: "Description",
 			placeholder: "Description",
-			required: true,
-            type: "text"
+			required: false,
+            type: "text",
+			customComponent: "markdown-editor",
+			columnClass: "col-12"
 		}
 	],
 	pageTitle: "Things"
+},
+(app) => {
+	return app.component("markdown-editor", MarkdownEditor);
 });
