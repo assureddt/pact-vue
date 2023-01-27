@@ -48,7 +48,7 @@
 							v-model="record[field.name]"
 							:required="field.required"
 						>
-							<option v-if="!field.required" :value="undefiend">
+							<option v-if="!field.required" :value="undefined">
 								Unselected
 							</option>
 							<option :value="false">
