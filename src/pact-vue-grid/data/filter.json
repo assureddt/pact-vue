@@ -1,0 +1,14 @@
+[ 
+	{
+		"id": -1,
+		"display": "All"
+	},
+	{
+		"id": 1,
+		"display": "Yes"
+	},
+	{
+		"id": 0,
+		"display": "No"
+	}
+]

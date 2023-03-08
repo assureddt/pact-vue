@@ -3,6 +3,7 @@
 		{
 			"id": 1,
 			"name": "Tom",
-			"description": "Something here"
+			"description": "Something here",
+			"happy": true
 		}
 }

@@ -3,7 +3,8 @@
 		{
 			"id": 1,
 			"name": "Tom",
-			"description": "Something here"
+			"description": "Something here",
+			"happy": true
 		},
 		{
 			"id": 2,
@@ -28,7 +29,8 @@
 		{
 			"id": 6,
 			"name": "Joe",
-			"description": ""
+			"description": "",
+			"happy": true
 		},
 		{
 			"id": 7,

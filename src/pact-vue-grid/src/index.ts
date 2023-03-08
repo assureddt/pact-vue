@@ -31,7 +31,18 @@ new CRUDGrid("#app", {
 		allowAdd: true,
 		allowDelete: true,
 		deleteColumn: "name",
-		buttonsWidth: 79
+		buttonsWidth: 79,
+		filters: [
+			{
+				url: "/data/filter.json",
+				label: "Happy",
+				send: true,
+				kind: "basic",
+				width: "col-md-5",
+				name: "happy",
+				defaultValue: -1
+			}
+		]
 	},
 	gridColumns: [
 		{
@@ -43,6 +54,11 @@ new CRUDGrid("#app", {
 			name: "description",
 			display: "Description",
             type: "text"
+		},
+		{
+			name: "happy",
+			display: "Happy",
+            type: "boolean"
 		},
 	],
 	editOptions: {
@@ -68,6 +84,15 @@ new CRUDGrid("#app", {
             type: "text",
 			customComponent: "markdown-editor",
 			columnClass: "col-12"
+		},
+		{
+			name: "happy",
+			display: "Happy",
+			placeholder: "Happy",
+			required: true,
+            type: "boolean",
+			trueText: "Yes",
+			falseText: "No"
 		}
 	],
 	pageTitle: "Things"
