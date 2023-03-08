@@ -37,6 +37,10 @@
 					<template v-if="column.type == 'text'">
 						{{ record[column.name] }}
 					</template>
+					<template v-else-if="column.type == 'boolean'">
+						<font-awesome-icon v-if="record[column.name]" icon="check" class="text-success" fixed-width></font-awesome-icon>
+						<font-awesome-icon v-else icon="times" class="text-danger" fixed-width></font-awesome-icon>
+					</template>
 					<template v-else-if="column.type == 'order'">
 						<div class="btn-group" role="group" aria-label="order buttons">
 							<button
