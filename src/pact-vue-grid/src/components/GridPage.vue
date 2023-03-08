@@ -94,7 +94,7 @@
 			const resetCascadeFilters = ref(0);
 			const pageSize = ref(0);
 
-			const pageSizeStorageKey = "pact-vue-grid-page-size";
+			const pageSizeStorageKey = `pact-vue-grid-page-size-${props.options.id ?? "default"}`;
 			const rawData = sessionStorage.getItem(pageSizeStorageKey);
 			pageSize.value = (rawData != null) ? parseInt(rawData) : props.options.pageSize ?? 20;
 

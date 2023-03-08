@@ -1,4 +1,5 @@
 export interface GridOptions {
+	id?: string;
 	read: string;
 	delete: string;
 	pageSize?: number;
