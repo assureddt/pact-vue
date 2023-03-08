@@ -6,7 +6,8 @@
 			</button>
 		</div>
 		<cascade-filters :filters="options.filters" @changed-filter="filterChanged" :reset="resetCascadeFilters"></cascade-filters>
-		<pagination :total="total" :page-size="options.pageSize" @page-changed="paginationPageChanged" :reset="resetCascadeFilters"></pagination>
+		<pagination :total="total" :page-size="pageSize" @page-changed="paginationPageChanged" :reset="resetCascadeFilters"></pagination>
+		<pagesize :sizeOptions="options.pageSizeOptions" :pageSize="options.pageSize" @page-size-changed="pageSizeChanged"></pagesize>
 		<div class="col-12 col-md-4 col-lg-3 col-xl-3 ms-auto">
 			<div class="input-group input-group-sm">
 				<label class="input-group-text" for="search-box">Search</label>
@@ -40,6 +41,7 @@
 				:query-data="computedQueryData"
 				:filter="filter"
 				:page="page"
+				:page-size="pageSize"
 				@update-total="updateTotal"
 				@edit="gridEdit"
 				@delete="gridDelete"
@@ -55,6 +57,7 @@
 	import { GridOptions, GridColumn, GridColumnOrder, QueryData } from "../models";
 	import CascadeFilters from "./CascadeFilters.vue";
 	import Pagination from "./GridPagination.vue";
+	import PageSize from "./GridPageSize.vue";
 	import Grid from "./PactGrid.vue";
 
 	export default defineComponent({
@@ -76,6 +79,7 @@
 		components: {
 			"cascade-filters": CascadeFilters,
 			pagination: Pagination,
+			pagesize: PageSize,
 			"grid-component": Grid,
 		},
 		setup(props, { emit }) {
@@ -88,6 +92,11 @@
 			const deletingDisplay = ref<string | undefined>(undefined);
 			const refreshCount = ref(0);
 			const resetCascadeFilters = ref(0);
+			const pageSize = ref(0);
+
+			const pageSizeStorageKey = "pact-vue-grid-page-size";
+			const rawData = sessionStorage.getItem(pageSizeStorageKey);
+			pageSize.value = (rawData != null) ? parseInt(rawData) : props.options.pageSize ?? 20;
 
 			const addMode = () => {
 				emit("changeMode", "add", undefined, computedQueryData.value, referenceTitle.value);
@@ -140,6 +149,15 @@
 				page.value = pageIndex;
 			};
 
+			const pageSizeChanged = (size: number) => {
+				if (pageSize.value == size)
+					return;
+
+				sessionStorage.setItem(pageSizeStorageKey, size.toString());
+				pageSize.value = size;
+				refresh();
+			};
+
 			const refresh = () => {
 				refreshCount.value = refreshCount.value + 1;
 			};
@@ -164,12 +182,14 @@
 				filterChanged,
 				selectionChangedPassthrough,
 				paginationPageChanged,
+				pageSizeChanged,
 				computedQueryData,
 				refreshCount,
 				referenceTitle,
 				deletingDisplay,
 				reset,
 				resetCascadeFilters,
+				pageSize
 			};
 		},
 	});

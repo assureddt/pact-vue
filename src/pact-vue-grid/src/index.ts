@@ -12,13 +12,15 @@ import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faBan } from "@fortawesome/pro-solid-svg-icons/faBan";
 import { faSave } from "@fortawesome/pro-solid-svg-icons/faSave";
 import { faCheck } from "@fortawesome/pro-solid-svg-icons/faCheck";
+import { faArrowLeft } from "@fortawesome/pro-solid-svg-icons/faArrowLeft";
+import { faArrowRight } from "@fortawesome/pro-solid-svg-icons/faArrowRight";
 
-library.add(faPlus, faEdit, faTimes, faBan, faSave, faCheck);
+library.add(faPlus, faEdit, faTimes, faBan, faSave, faCheck, faArrowLeft, faArrowRight);
 dom.watch();
 
 new CRUDGrid("#app", {
 	gridOptions: {
-		read: "/read.json",
+		read: "../data/read.json",
 		delete: "/remove",
 		pageSize: 10,
         order: {
@@ -46,7 +48,7 @@ new CRUDGrid("#app", {
 	editOptions: {
 		add: "/add",
 		edit: "/edit",
-		grabData: "/data.json",
+		grabData: "../data/data.json",
 		editTitle: "Edit",
 		addTitle: "Add"
 	},

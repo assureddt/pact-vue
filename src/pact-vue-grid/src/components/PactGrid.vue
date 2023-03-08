@@ -135,6 +135,11 @@
 				default: 0,
 				required: false,
 			},
+			pageSize: {
+				type: Number,
+				default: 10,
+				required: false
+			}
 		},
 		emits: ["edit", "delete", "selectionChanged", "updateTotal"],
 		setup(props, { emit }) {
@@ -150,7 +155,7 @@
 						"?page=" +
 						props.page +
 						"&size=" +
-						props.options.pageSize +
+						props.pageSize +
 						"&order=" +
 						orderColumnName.value +
 						"&direction=" +
