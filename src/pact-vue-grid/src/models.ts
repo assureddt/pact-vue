@@ -1,7 +1,7 @@
 export interface GridOptions {
 	read: string;
 	delete: string;
-	pageSize: number;
+	pageSize?: number;
 	order: GridOptionsOrder;
 	allowEdit: boolean;
 	allowAdd: boolean;
@@ -14,6 +14,7 @@ export interface GridOptions {
 	selectable?: true;
 	selectionMode?: GridSelectionMode;
 	showReset?: boolean;
+	pageSizeOptions?: number[];
 }
 
 export interface GridOptionsOrder {
