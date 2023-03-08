@@ -23,7 +23,6 @@
 							:field="field"
 							:model-value="record[field.name]"
 							:editor-values="record"
-							:parent="parent"
 							@update:model-value="record[field.name] = $event"
 						></component>
 						<select
@@ -48,7 +47,7 @@
 							v-model="record[field.name]"
 							:required="field.required"
 						>
-							<option v-if="!field.required" :value="undefiend">
+							<option v-if="!field.required" :value="undefined">
 								Unselected
 							</option>
 							<option :value="false">
