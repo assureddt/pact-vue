@@ -155,7 +155,7 @@
 
 			const columnSortStorageKey = props.options.id != null ? `pact-vue-grid-column-sort-${props.options.id}`: null;
 			if (columnSortStorageKey != null) {
-				const rawData = sessionStorage.getItem(columnSortStorageKey);
+				const rawData = localStorage.getItem(columnSortStorageKey);
 				if (rawData != null) 
 				{
 					const colSort : GridOptionsOrder = Object.assign(GridOptionsOrder.prototype, JSON.parse(rawData));
@@ -200,7 +200,7 @@
 				sort.columnName = orderColumnName.value = columnName;
 
 				if (columnSortStorageKey != null) {
-					sessionStorage.setItem(columnSortStorageKey, JSON.stringify(sort));
+					localStorage.setItem(columnSortStorageKey, JSON.stringify(sort));
 				}
 
 				await loadPage();
