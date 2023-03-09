@@ -20,6 +20,7 @@ dom.watch();
 
 new CRUDGrid("#app", {
 	gridOptions: {
+		id: "myTestGrid1",
 		read: "../data/read.json",
 		delete: "/remove",
 		pageSize: 10,

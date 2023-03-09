@@ -11,7 +11,6 @@
 <script lang="ts">
 	import { defineComponent, ref } from "vue";
 
-	const storageName = "pact-vue-grid-page-size";
 	export default defineComponent({
 		props: {
 			pageSize: {
@@ -27,8 +26,7 @@
 		},
 		emits: ["pageSizeChanged"],
 		setup(props, { emit }) {
-			const rawData = sessionStorage.getItem(storageName);
-			const selectedPageSize = ref((rawData != null) ? parseInt(rawData) : props.pageSize);
+			const selectedPageSize = ref(props.pageSize);
 
 			const sizeChanged = async (event: Event) => {
 				const value = Number((event.target as HTMLSelectElement).value);

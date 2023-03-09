@@ -18,9 +18,14 @@ export interface GridOptions {
 	pageSizeOptions?: number[];
 }
 
-export interface GridOptionsOrder {
-	columnName: string;
-	direction: GridOrderDirection;
+export class GridOptionsOrder {
+	constructor(columnName: string, direction: GridOrderDirection) {
+		this.columnName = columnName;
+		this.direction = direction;
+	}
+
+	columnName = "";
+	direction: GridOrderDirection = GridOrderDirection.ascending;
 }
 
 export enum GridOrderDirection {

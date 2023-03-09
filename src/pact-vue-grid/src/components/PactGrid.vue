@@ -109,7 +109,7 @@
 
 <script lang="ts">
 	import { defineComponent, PropType, ref, onMounted, watch } from "vue";
-	import { GridOptions, GridColumn, GridRow, GridOrderDirection, GridColumnOrder, GridSelectionMode, QueryData } from "../models";
+	import { GridOptions, GridColumn, GridRow, GridOrderDirection, GridColumnOrder, GridOptionsOrder, GridSelectionMode, QueryData } from "../models";
 
 	export default defineComponent({
 		props: {
@@ -153,6 +153,17 @@
 			const orderDirection = ref(props.options.order.direction);
 			const selectedRows = ref<SelectedRow>({});
 
+			const columnSortStorageKey = props.options.id != null ? `pact-vue-grid-column-sort-${props.options.id}`: null;
+			if (columnSortStorageKey != null) {
+				const rawData = sessionStorage.getItem(columnSortStorageKey);
+				if (rawData != null) 
+				{
+					const colSort : GridOptionsOrder = Object.assign(GridOptionsOrder.prototype, JSON.parse(rawData));
+					orderColumnName.value = colSort.columnName;
+					orderDirection.value = colSort.direction;
+				}
+			}
+
 			const loadPage = async () => {
 				fetch(
 					props.options.read +
@@ -179,10 +190,19 @@
 			onMounted(loadPage);
 
 			const changeOrder = async (columnName: string) => {
+				const sort = new GridOptionsOrder (columnName, orderDirection.value);
+				
 				if (orderColumnName.value == columnName)
-					orderDirection.value =
+				{
+					sort.direction = orderDirection.value =
 						orderDirection.value == GridOrderDirection.ascending ? GridOrderDirection.descending : GridOrderDirection.ascending;
-				orderColumnName.value = columnName;
+				}
+				sort.columnName = orderColumnName.value = columnName;
+
+				if (columnSortStorageKey != null) {
+					sessionStorage.setItem(columnSortStorageKey, JSON.stringify(sort));
+				}
+
 				await loadPage();
 			};
 

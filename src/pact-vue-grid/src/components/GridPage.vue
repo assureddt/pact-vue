@@ -7,7 +7,7 @@
 		</div>
 		<cascade-filters :filters="options.filters" @changed-filter="filterChanged" :reset="resetCascadeFilters"></cascade-filters>
 		<pagination :total="total" :page-size="pageSize" @page-changed="paginationPageChanged" :reset="resetCascadeFilters"></pagination>
-		<pagesize :sizeOptions="options.pageSizeOptions" :pageSize="options.pageSize" @page-size-changed="pageSizeChanged"></pagesize>
+		<pagesize :sizeOptions="options.pageSizeOptions" :pageSize="pageSize" @page-size-changed="pageSizeChanged"></pagesize>
 		<div class="col-12 col-md-4 col-lg-3 col-xl-3 ms-auto">
 			<div class="input-group input-group-sm">
 				<label class="input-group-text" for="search-box">Search</label>
