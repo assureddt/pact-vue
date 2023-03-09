@@ -43,7 +43,8 @@ new CRUDGrid("#app", {
 				name: "happy",
 				defaultValue: -1
 			}
-		]
+		],
+		actionsName: "Do stuff"
 	},
 	gridColumns: [
 		{

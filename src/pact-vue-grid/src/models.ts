@@ -16,6 +16,7 @@ export interface GridOptions {
 	selectionMode?: GridSelectionMode;
 	showReset?: boolean;
 	pageSizeOptions?: number[];
+	actionsName?: string;
 }
 
 export class GridOptionsOrder {

@@ -17,7 +17,7 @@
 				>
 					{{ column.display }}
 				</th>
-				<th v-if="hasActions()" :style="{ width: options.buttonsWidth + 'px' }">Actions</th>
+				<th v-if="hasActions()" :style="{ width: options.buttonsWidth + 'px' }">{{options.actionsName ?? "Actions"}}</th>
 			</tr>
 		</thead>
 		<tbody>
