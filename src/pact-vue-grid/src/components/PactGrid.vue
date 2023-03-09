@@ -158,7 +158,7 @@
 				const rawData = localStorage.getItem(columnSortStorageKey);
 				if (rawData != null) 
 				{
-					const colSort : GridOptionsOrder = Object.assign(GridOptionsOrder.prototype, JSON.parse(rawData));
+					const colSort : GridOptionsOrder = JSON.parse(rawData);
 					orderColumnName.value = colSort.columnName;
 					orderDirection.value = colSort.direction;
 				}
@@ -190,7 +190,10 @@
 			onMounted(loadPage);
 
 			const changeOrder = async (columnName: string) => {
-				const sort = new GridOptionsOrder (columnName, orderDirection.value);
+				const sort : GridOptionsOrder = {
+					columnName: columnName,
+					direction: orderDirection.value
+				};
 				
 				if (orderColumnName.value == columnName)
 				{

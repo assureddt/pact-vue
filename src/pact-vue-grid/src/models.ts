@@ -19,14 +19,9 @@ export interface GridOptions {
 	actionsName?: string;
 }
 
-export class GridOptionsOrder {
-	constructor(columnName: string, direction: GridOrderDirection) {
-		this.columnName = columnName;
-		this.direction = direction;
-	}
-
-	columnName = "";
-	direction: GridOrderDirection = GridOrderDirection.ascending;
+export interface GridOptionsOrder {
+	columnName: string;
+	direction: GridOrderDirection;
 }
 
 export enum GridOrderDirection {

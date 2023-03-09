@@ -6,6 +6,7 @@ const path = require("path");
 
 export default defineConfig({
     build: {
+        minify: false,
         sourcemap: true,
         lib: {
             entry: path.resolve(__dirname, 'src/main.ts'),
